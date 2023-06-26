@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{{.title}}</title>
+    </head>
+    <body>
+        {{if .error }}
+            {{.error}}
+        {{ end }}
+        <h3>Giriş yap</h3>
+        <form method="POST" action="/register">
+            <input type="text" id="username" name="username" placeholder="Kullanıcı adı giriniz">
+            <input type="email" id="email" name="email" placeholder="Email giriniz">
+            <input type="password" id="pass" name="pass" placeholder="şifre giriniz">
+            <input type="submit">
+        </form>
+    </body>
+</html>
