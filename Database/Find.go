@@ -101,6 +101,5 @@ func FindUserByToken(Token string) (User, error){
         }
         return User{}, err
     }
-
     return user, nil
 }

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        {{ template "partials/head" .}}
+    </head>
+    <body>
+        {{template "partials/sidebar"}}
+        <h3>Admin</h3>
+         <table border="1">
+            <tr>
+                <th>Kullanıcı adı</th>
+                <th>Email</th>
+                <th>Düzenle</th>
+                <th>Yasakla</th>
+                <th>Sil</th>
+            </tr>
+            {{range .Users}}
+                <tr>
+                    <td>{{.Username}}</td>
+                    <td>{{.Email}}</td>
+                    <td>Düzenle</td>
+                    <td>Yasakla</td>
+                    <td>Sil</td>
+                </tr>
+            {{end}}
+         </table>
+    </body>
+</html>

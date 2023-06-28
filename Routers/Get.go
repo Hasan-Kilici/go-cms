@@ -14,21 +14,37 @@ func HomePage(c *fiber.Ctx) error {
 
 	c.Cookie(cookie)
 
-	c.Render("./views/pages/index.html", fiber.Map{
+	c.Render("index", fiber.Map{
 		"title":"Anasayfa",
 	})
 	return nil
 }
 
 func LoginPage(c *fiber.Ctx) error {
-	c.Render("./views/pages/login.html", fiber.Map{
+	Token := c.Cookies("Token")
+	redirect := c.Cookies("LastPath")
+	
+	if Token != "" {
+		c.Redirect(redirect)
+		return nil
+	}
+	
+	c.Render("login", fiber.Map{
 		"title":"Giriş yap",
 	})
 	return nil
 }
 
 func RegisterPage(c *fiber.Ctx) error {
-	c.Render("./views/pages/register.html", fiber.Map{
+	Token := c.Cookies("Token")
+	redirect := c.Cookies("LastPath")
+
+	if Token != "" {
+		c.Redirect(redirect)
+		return nil
+	}
+
+	c.Render("register", fiber.Map{
 		"title":"Giriş yap",
 	})
 	return nil

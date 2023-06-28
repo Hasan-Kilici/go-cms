@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        {{ template "partials/head" .}}
+    </head>
+    <body>
+       {{ template "partials/sidebar" .}}
+        <h3>Bloglar</h3>
+        <table border="1">
+            <tr>
+                <th>Başlık</th>
+                <th>Görüntülenme</th>
+                <th>Beğeni</th>
+                <th>Sil</th>
+                <th>Düzenle</th>
+            </tr>
+            {{range .Blogs}}
+                <tr>
+                    <td>{{.Title}}</td>
+                    <td>{{.Views}}</td>
+                    <td>{{.Like}}</td>
+                    <td>Sil</td>
+                    <td>Düzenle</td>
+                </tr>
+            {{end}}
+        </table>
+
+    </body>
+</html>
