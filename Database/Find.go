@@ -17,12 +17,23 @@ type User struct{
 	Perm		string
 }
 
+type Blog struct {
+	ID				int
+	Token			string
+	Title			string
+	HTML		    string
+    Views           int
+	Like		    int
+}
+
 func Login(Email, Password string) (string, error) {
 	db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
-	if err != nil {
-		return "", err
-	}
-	defer db.Close()
+    if err != nil {
+        panic(err.Error())
+    }
+
+    defer db.Close()
+
 	query := "SELECT Token, Password FROM users WHERE Email = ?"
 	row := db.QueryRow(query, Email)
 
@@ -38,10 +49,11 @@ func Login(Email, Password string) (string, error) {
 }
 
 func FindUserByEmail(Email string) bool {
-    db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/cms")
+    db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
     if err != nil {
-        return false
+        panic(err.Error())
     }
+
     defer db.Close()
 
     query := "SELECT COUNT(*) FROM users WHERE Email = ?"
@@ -61,10 +73,11 @@ func FindUserByEmail(Email string) bool {
 }
 
 func FindUserByUsername(Username string) bool {
-    db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/cms")
+    db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
     if err != nil {
-        return false
+        panic(err.Error())
     }
+
     defer db.Close()
 
     query := "SELECT COUNT(*) FROM users WHERE username = ?"
@@ -84,7 +97,7 @@ func FindUserByUsername(Username string) bool {
 }
 
 func FindUserByToken(Token string) (User, error){
-	db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/cms")
+	db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
     if err != nil {
         return User{}, err
     }
@@ -102,4 +115,54 @@ func FindUserByToken(Token string) (User, error){
         return User{}, err
     }
     return user, nil
+}
+
+func FindBlogByToken(Token string) (Blog, error) {
+    db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
+    if err != nil {
+        return Blog{}, err
+    }
+    defer db.Close()
+
+    query := "SELECT * FROM blogs WHERE token = ?"
+    row := db.QueryRow(query, Token)
+
+    var blog Blog
+    err = row.Scan(&blog.ID, &blog.Token, &blog.Title, &blog.HTML ,&blog.Views, &blog.Like)
+    if err != nil {
+        if err == sql.ErrNoRows {
+            return Blog{}, fmt.Errorf("kullanıcı bulunamadı")
+        }
+        return Blog{}, err
+    }
+    return blog, nil
+}
+
+func FindBlogLike(UserToken, BlogToken string) bool {
+    db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
+    if err != nil {
+        panic(err.Error())
+    }
+
+    defer db.Close()
+    
+    query := "SELECT COUNT(*) FROM likes WHERE UserToken = ? AND BlogToken = ?"
+    row := db.QueryRow(query, UserToken, BlogToken)
+    
+    var count int
+    err = row.Scan(&count)
+    if err != nil {
+        fmt.Println("Like bulunamadı")
+        return false
+    }
+    
+    if count == 0 {
+        fmt.Println("Like bulunamadı")
+        return false
+    } else {
+        fmt.Println("Like bulundu")
+        return true
+    }
+    
+    return true
 }

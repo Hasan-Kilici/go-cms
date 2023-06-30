@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        {{ template "partials/head" .}}
+    </head>
+    <body>
+       {{ template "partials/navbar" .}}
+       <h2>{{.Title}}</h2>
+       <div id="HTML">
+
+       </div>
+       {{ if .UserStatus }}
+       {{ if .UserLike }}
+        <form method="POST" action="/unlike/blog/{{.Token}}">
+            <input type="submit" value="Beğeniyi geri al {{.Like}}">
+        </form>
+        {{else}}
+        <form method="POST" action="/like/blog/{{.Token}}">
+            <input type="submit" value="Beğen {{.Like}}">
+        </form>
+        {{end}}
+       {{end}}
+        <script>
+            window.onload = ()=>{
+                document.getElementById("HTML").innerHTML = "{{.HTML}}";
+            }
+        </script>
+    </body>
+</html>

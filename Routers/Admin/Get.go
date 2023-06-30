@@ -123,6 +123,40 @@ func UsersPage(c *fiber.Ctx) error {
 		"title":"Admin Dashboard",
 		"UserInfo": UserInfo,
 		"Users":Users,
-	},"partials/")
+	})
+	return nil
+}
+
+func EditUserPage(c *fiber.Ctx) error {
+	Token := c.Cookies("Token")
+	redirect := c.Cookies("LastPath")
+	UserToken := c.Params("Token")
+
+	User , err := Database.FindUserByToken(Token)
+	if err != nil {
+		c.Redirect(redirect)
+		return nil
+	}
+
+	if(User.Perm != "Admin"){
+		c.Redirect(redirect)
+		return nil	
+	} 
+
+	EditUser, err := Database.FindUserByToken(UserToken)
+	if err != nil {
+		c.Redirect(redirect)
+		return nil
+	}
+
+	c.Render("admin/edituser", fiber.Map{
+		"title":"Kullanıcıyı düzenle",
+		"Username": EditUser.Username,
+		"Email": EditUser.Email,
+		"Password":EditUser.Password,
+		"Perm":EditUser.Perm,
+		"Token":EditUser.Token,
+	})
+
 	return nil
 }

@@ -25,7 +25,7 @@ type Blogs struct {
 
 
 func ListAllBlogs() ([]Blogs, error) {
-    db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/cms")
+    db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
     if err != nil {
         return nil, err
     }
@@ -56,7 +56,7 @@ func ListAllBlogs() ([]Blogs, error) {
 }
 
 func ListAllUsers() ([]Users, error) {
-    db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/cms")
+    db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
     if err != nil {
         return nil, err
     }

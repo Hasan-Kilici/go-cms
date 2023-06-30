@@ -26,7 +26,7 @@ func Register(c *fiber.Ctx) error {
 	}
 
 	if !Database.Register(form.Username, form.Email, form.Pass){
-		c.Render("./views/pages/register.html", fiber.Map{
+		c.Render("register", fiber.Map{
 			"title":"Giriş yap",
 			"error":"Bu Email Kullanılıyor",
 		})
@@ -57,7 +57,7 @@ func Login(c *fiber.Ctx) error {
 
 	login, err := Database.Login(form.Email,form.Pass)
 	if err != nil{
-		c.Render("./views/pages/login.html", fiber.Map{
+		c.Render("login", fiber.Map{
 			"title":"Giriş yap",
 			"error":"Email ya da Şifre yanlış",
 		})
