@@ -28,6 +28,8 @@ func main(){
 	//Admin Pages
 	app.Get("/admin/home", Admin.HomePage)
 	app.Get("/admin/blogs", Admin.BlogsPage)
+	app.Get("/admin/blogs/:Page", Admin.BlogsPageWithPages)
+	app.Get("/admin/users/:Page", Admin.UsersPageWithPages)
 	app.Get("/admin/users", Admin.UsersPage)
 
 	//Blog Propertys

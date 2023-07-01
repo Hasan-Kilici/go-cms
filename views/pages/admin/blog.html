@@ -72,8 +72,28 @@
                 </tr>
                 {{end}}
             </tbody>
-        </table>
+        </table>     
 </div>
+<div id="pages" class="mt-5 mb-5 inline-flex gap-1 rounded-md shadow-sm" role="group">
+    
+  </div>
+
+  
 </div>
+<script>
+    let Blog = Number("{{.BlogCount}}");
+
+    for (var i = 0; i <= Blog; i++) {
+        let page = 0; 
+        if (i % 10 === 0) {
+            pageCount = (i / 10) + 1;
+            page = i / 10;
+            document.getElementById("pages").innerHTML += `
+            <button onclick="window.location.href = '/admin/blogs/${page}'" type="button" class="rounded-md dark:bg-gray-800 px-4 py-2 text-sm font-medium text-gray-900 bg-white border-t border-b border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:border-gray-800 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">
+                    ${pageCount}
+            </button>`
+        }
+    }
+</script>
 </body>
 </html>

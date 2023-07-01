@@ -125,3 +125,65 @@ func ListAllBlogTags(BlogToken string) ([]Tags, error) {
 
     return tags, nil
 }
+
+func ListBlogs(skip,length int) ([]Blogs, error) {
+    db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
+    if err != nil {
+        return nil, err
+    }
+    defer db.Close()
+
+    query := "SELECT * FROM blogs LIMIT ?, ?"
+    rows, err := db.Query(query,skip,length)
+    if err != nil {
+        return nil, err
+    }
+    defer rows.Close()
+
+    blogs := []Blogs{}
+    for rows.Next() {
+        var blog Blogs
+        err := rows.Scan(&blog.ID, &blog.Token,&blog.Title,&blog.HTML,&blog.Views,&blog.Like)
+        if err != nil {
+            return nil, err
+        }
+        blogs = append(blogs, blog)
+    }
+
+    if err := rows.Err(); err != nil {
+        return nil, err
+    }
+
+    return blogs, nil
+}
+
+func ListUsers(skip, length int) ([]Users, error) {
+    db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
+    if err != nil {
+        return nil, err
+    }
+    defer db.Close()
+
+    query := "SELECT * FROM users LIMIT ?, ?"
+    rows, err := db.Query(query,skip,length)
+    if err != nil {
+        return nil, err
+    }
+    defer rows.Close()
+    
+    users := []Users{}
+    for rows.Next() {
+        var user Users
+        err := rows.Scan(&user.ID, &user.Token, &user.Username, &user.Email ,&user.Password, &user.Perm)
+        if err != nil {
+            return nil, err
+        }
+        users = append(users, user)
+    }
+
+    if err := rows.Err(); err != nil {
+        return nil, err
+    }
+
+    return users, nil
+}
