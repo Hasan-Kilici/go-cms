@@ -26,8 +26,32 @@ func DeleteBlog(Token string){
 		fmt.Println(err)
 		return
 	}
-
+	DeleteBlogTags(Token)
 	fmt.Printf("%d satır Silindi\n", rowCount)
+}
+
+func DeleteBlogTags(Token string) {
+	db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
+    if err != nil {
+        panic(err.Error())
+    }
+
+    defer db.Close()
+	
+	query := "DELETE FROM tags WHERE BlogToken=?"
+	res, err := db.Exec(query,Token)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	rowCount, err := res.RowsAffected()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	fmt.Printf("%d satır Silindi\n", rowCount)	
 }
 
 func DeleteUser(Token string){

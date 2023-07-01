@@ -8,6 +8,7 @@ import (
 type BlogForm struct {
 	Title string `json:"Title" xml:"Title" form:"Title"`
 	HTML string `json:"HTML" xml:"HTML" form:"HTML"`
+	Tags string `json:"Tags" xml:"Tags" form:"Tags"`
 }
 
 func CreateBlog(c *fiber.Ctx) error {
@@ -31,7 +32,7 @@ func CreateBlog(c *fiber.Ctx) error {
 		return nil
 	}
 
-	Database.CreateBlog(p.Title, p.HTML)
+	Database.CreateBlog(p.Title, p.HTML, p.Tags)
 	c.Redirect(redirect)
 	return nil
 }

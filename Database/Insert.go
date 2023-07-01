@@ -6,6 +6,7 @@ import (
 	"CMS/Utils"
 	"fmt"
 	b64 "encoding/base64"
+	"strings"
 )
 
 func Register(Username, Email, Password string) bool {
@@ -40,7 +41,7 @@ func Register(Username, Email, Password string) bool {
 	}
 }
 
-func CreateBlog(Title, HTML string){
+func CreateBlog(Title, HTML , Tags string){
 	db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
     if err != nil {
         panic(err.Error())
@@ -58,7 +59,9 @@ func CreateBlog(Title, HTML string){
 	if err != nil {
 		fmt.Println(err)
 	}
-		
+
+	SaveAllTags(Token, Tags)
+	
 	fmt.Printf("%d satır eklendi\n", rowCount)
 }
 
@@ -83,3 +86,28 @@ func SaveUserLike(BlogToken, UserToken string) {
 		
 	fmt.Printf("%d satır eklendi\n", rowCount)
 }
+
+func SaveAllTags(BlogToken, Tag string) {
+	db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
+    if err != nil {
+        panic(err.Error())
+    }
+
+    defer db.Close()
+
+	Tags := strings.Split(Tag, ",")
+	TagCount := len(Tags)
+	for i := 0;i < TagCount;i++ {
+		Token := Utils.GenerateToken(31)
+		res, err := db.Exec("INSERT INTO tags VALUES (?,?,?,?)","",Token,Tags[i],BlogToken)
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		rowCount, err := res.RowsAffected()
+		if err != nil {
+			fmt.Println(err)
+		}
+		fmt.Printf("%d satır eklendi\n", rowCount)
+	}
+} 

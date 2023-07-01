@@ -40,6 +40,7 @@ func BlogPage(c *fiber.Ctx) error {
 	blogToken := c.Params("Token")
 	userToken := c.Cookies("Token")
 	Blog, err := Database.FindBlogByToken(blogToken)
+	Tags , _ := Database.ListAllBlogTags(blogToken)
 	if err != nil {
 		c.Render("error/404",fiber.Map{
 			"Title":"Sayfa bulunamadı",
@@ -59,6 +60,7 @@ func BlogPage(c *fiber.Ctx) error {
 			"HTML":Blog.HTML,
 			"Views":Blog.Views,
 			"Like":Blog.Like,
+			"Tags":Tags,
 		})
 		return nil
 	}
@@ -75,6 +77,7 @@ func BlogPage(c *fiber.Ctx) error {
 		"HTML":Blog.HTML,
 		"Views":Blog.Views,
 		"Like":Blog.Like,
+		"Tags":Tags,
 	})
 
 	cookie := new(fiber.Cookie)

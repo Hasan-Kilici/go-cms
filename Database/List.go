@@ -23,6 +23,13 @@ type Blogs struct {
 	Like			int
 }
 
+type Tags struct {
+    ID          int
+    Token       string
+    Tag         string
+    BlogToken   string
+}
+
 
 func ListAllBlogs() ([]Blogs, error) {
     db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
@@ -84,4 +91,37 @@ func ListAllUsers() ([]Users, error) {
     }
 
     return users, nil
+}
+
+func ListAllBlogTags(BlogToken string) ([]Tags, error) {
+    db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
+    if err != nil {
+        return nil, err
+    }
+    defer db.Close()
+
+    query := "SELECT * FROM tags WHERE BlogToken=?"
+    rows, err := db.Query(query,BlogToken)
+
+    defer rows.Close()
+
+    tags := []Tags{}
+    for rows.Next() {
+        var tag Tags
+        err := rows.Scan(&tag.ID, &tag.Token, &tag.Tag, &tag.BlogToken)
+        if err != nil {
+            return nil,err
+        }
+        tags = append(tags, tag)
+    }
+
+    if err != nil {
+        return nil, err
+    }
+   
+    if err := rows.Err(); err != nil {
+        return nil, err
+    }
+
+    return tags, nil
 }
