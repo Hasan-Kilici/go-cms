@@ -1,4 +1,5 @@
 package Utils
+
 import(
 	"time"
 	"math/rand"

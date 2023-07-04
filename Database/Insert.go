@@ -7,6 +7,7 @@ import (
 	"fmt"
 	b64 "encoding/base64"
 	"strings"
+	"image"
 )
 
 func Register(Username, Email, Password string) bool {
@@ -111,3 +112,27 @@ func SaveAllTags(BlogToken, Tag string) {
 		fmt.Printf("%d satır eklendi\n", rowCount)
 	}
 } 
+
+func UploadFile(img image.Image, path , dbpath string){
+	db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
+    if err != nil {
+        panic(err.Error())
+    }
+
+    defer db.Close()
+
+	Utils.SaveResizedImage(img, path)
+
+	Token := Utils.GenerateToken(31)
+	res, err := db.Exec("INSERT INTO galery VALUES (?,?,?)","",Token,dbpath)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	rowCount, err := res.RowsAffected()
+	if err != nil {
+		fmt.Println(err)
+	}
+	
+	fmt.Printf("%d satır eklendi\n", rowCount)
+}

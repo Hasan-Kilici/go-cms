@@ -138,6 +138,7 @@ func E_CommercePage(){
 func UsersPage(c *fiber.Ctx) error {
 	Token := c.Cookies("Token")
 	redirect := c.Cookies("LastPath")
+	UserCount := Database.GetUserCount()
 
 	Users, _ := Database.ListUsers(0,10)
 	User , err := Database.FindUserByToken(Token)
@@ -170,6 +171,7 @@ func UsersPage(c *fiber.Ctx) error {
 		"title":"Admin Dashboard",
 		"UserInfo": UserInfo,
 		"Users":Users,
+		"UserCount":UserCount,
 	})
 	return nil
 }
@@ -179,6 +181,7 @@ func UsersPageWithPages(c *fiber.Ctx) error {
 	redirect := c.Cookies("LastPath")
 	Page, _ := strconv.Atoi(c.Params("Page"))
 	Skip := Page * 10
+
 	UserCount := Database.GetUserCount()
 
 	Users, _ := Database.ListUsers(Skip,10)

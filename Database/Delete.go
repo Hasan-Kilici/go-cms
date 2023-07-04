@@ -27,6 +27,7 @@ func DeleteBlog(Token string){
 		return
 	}
 	DeleteBlogTags(Token)
+	DeleteLikes(Token)
 	fmt.Printf("%d satır Silindi\n", rowCount)
 }
 
@@ -100,4 +101,28 @@ func DeleteUserLike(UserToken, BlogToken string){
 	}
 
 	fmt.Printf("%d satır Silindi\n", rowCount)	
+}
+
+func DeleteLikes(BlogToken string) {
+	db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
+    if err != nil {
+        panic(err.Error())
+    }
+
+    defer db.Close()
+	
+	query := "DELETE FROM likes WHERE BlogToken=?" 
+	res, err := db.Exec(query,BlogToken)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	rowCount, err := res.RowsAffected()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	fmt.Printf("%d satır Silindi\n", rowCount)		
 }

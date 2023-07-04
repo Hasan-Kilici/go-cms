@@ -34,7 +34,7 @@ func GetUserCount() int {
 	defer db.Close()
 
 	var rowCount int
-	err = db.QueryRow("SELECT COUNT(*) FROM user").Scan(&rowCount)
+	err = db.QueryRow("SELECT COUNT(*) FROM users").Scan(&rowCount)
 	if err != nil {
 		panic(err.Error())
 	}

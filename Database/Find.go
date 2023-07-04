@@ -26,6 +26,12 @@ type Blog struct {
 	Like		    int
 }
 
+type Galery struct {
+    ID          int
+    Token       string
+    Path        string
+}
+
 func Login(Email, Password string) (string, error) {
 	db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
     if err != nil {
@@ -165,4 +171,26 @@ func FindBlogLike(UserToken, BlogToken string) bool {
     }
     
     return true
+}
+
+func FindPhotoByToken(Token string) (Galery ,error){
+    db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
+    if err != nil {
+        return Galery{}, err
+    }
+    defer db.Close()
+
+    query := "SELECT * FROM galery WHERE token = ?"
+    row := db.QueryRow(query, Token)
+
+    var galery Galery
+    err = row.Scan(&galery.ID, &galery.Token, &galery.Path)
+    if err != nil {
+        if err == sql.ErrNoRows {
+            return Galery{}, err
+        }
+        return Galery{}, err
+    }
+
+    return  galery, nil
 }
