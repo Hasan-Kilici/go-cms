@@ -18,10 +18,9 @@
 - [X] SEO
 
 ### Siteden görseller
-![image](https://github.com/Hasan-Kilici/go-cms/assets/105741983/9c50d84b-af02-4940-9ae6-d8028ebf3714)
-![image](https://github.com/Hasan-Kilici/go-cms/assets/105741983/f08d3525-0d27-4326-8666-e5ed1156ae84)
-![image](https://github.com/Hasan-Kilici/go-cms/assets/105741983/48b5a147-cae5-4665-8de4-ee6de6fd7f35)
-![image](https://github.com/Hasan-Kilici/go-cms/assets/105741983/d7c6a64e-4dec-4427-b0ab-9eab72374e7f)
-![image](https://github.com/Hasan-Kilici/go-cms/assets/105741983/b907c306-4cfc-4436-886c-6b3390822ed1)
-![image](https://github.com/Hasan-Kilici/go-cms/assets/105741983/44a2d669-7ee3-4c72-8c77-eeb925f9cd11)
+![Ekran görüntüsü 2023-07-05 032223](https://github.com/Hasan-Kilici/go-cms/assets/105741983/fb83c0b9-4e92-4a6b-9909-101600709bea)
+![Ekran görüntüsü 2023-07-05 032434](https://github.com/Hasan-Kilici/go-cms/assets/105741983/cdf34277-171a-4fa2-b48c-ef21fb504c28)
+![Ekran görüntüsü 2023-07-05 032522](https://github.com/Hasan-Kilici/go-cms/assets/105741983/cd2121fd-92be-4b18-811a-0d206cb7c0a9)
+![Ekran görüntüsü 2023-07-05 032609](https://github.com/Hasan-Kilici/go-cms/assets/105741983/f7038642-3ae2-4770-9a98-68224a4da751)
+![Ekran görüntüsü 2023-07-05 032747](https://github.com/Hasan-Kilici/go-cms/assets/105741983/d1347b50-76e0-43de-ba8d-c041f2fdb1bf)
 
