@@ -7,6 +7,7 @@ import(
 	"CMS/Routers/Admin"
 	"github.com/gofiber/template/html/v2"
 	"CMS/Routers/Blog"
+	"CMS/Routers/Galery"
 )
 
 func main(){
@@ -30,7 +31,9 @@ func main(){
 	app.Get("/admin/blogs", Admin.BlogsPage)
 	app.Get("/admin/blogs/:Page", Admin.BlogsPageWithPages)
 	app.Get("/admin/users/:Page", Admin.UsersPageWithPages)
+	app.Get("/admin/galery/:Page", Admin.EditGaleryPageWithPages)
 	app.Get("/admin/users", Admin.UsersPage)
+	app.Get("/admin/galery", Admin.GaleryPage)
 
 	//Blog Propertys
 	app.Post("/like/blog/:Token", Blog.LikeBlog)
@@ -48,6 +51,11 @@ func main(){
 	app.Post("/delete/user/:Token", Admin.DeleteUser)
 	app.Get("/edit/user/:Token", Admin.EditUserPage) //User Edit Page
 	app.Post("/edit/user/:Token", Admin.EditUser)
+	app.Post("/upload/photo", Galery.UploadImage)
+	app.Post("/delete/galery/:Token", Galery.DeleteGalery)
+	app.Post("/edit/galery/:Token", Galery.EditGalery)
+	app.Get("/edit/galery/:Token", Admin.EditGaleryPage)
+	
 
 	err := app.Listen(":4000")
 	if err != nil {
