@@ -113,7 +113,7 @@ func SaveAllTags(BlogToken, Tag string) {
 	}
 } 
 
-func UploadFile(img image.Image, path , dbpath string){
+func UploadFile(img image.Image, path , dbpath , title, description string){
 	db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
     if err != nil {
         panic(err.Error())
@@ -125,6 +125,28 @@ func UploadFile(img image.Image, path , dbpath string){
 
 	Token := Utils.GenerateToken(31)
 	res, err := db.Exec("INSERT INTO galery VALUES (?,?,?)","",Token,dbpath)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	rowCount, err := res.RowsAffected()
+	if err != nil {
+		fmt.Println(err)
+	}
+	
+	SaveImageProps(Token,title,description)
+	fmt.Printf("%d satır eklendi\n", rowCount)
+}
+
+func SaveImageProps(galeryToken, title, description string) {
+	db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
+    if err != nil {
+        panic(err.Error())
+    }
+
+    defer db.Close()
+	Token := Utils.GenerateToken(31)
+	res, err := db.Exec("INSERT INTO galerypropertys VALUES (?,?,?,?,?)","",Token,title,description,galeryToken)
 	if err != nil {
 		fmt.Println(err)
 	}

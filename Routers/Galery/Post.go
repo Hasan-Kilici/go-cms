@@ -7,6 +7,11 @@ import (
 	"image"
 )
 
+type GaleryForm struct {
+	Title string `json:"Title" xml:"Title" form:"Title"`
+	Description string `json:"Description" xml:"Description" form:"Description"`
+}
+
 func UploadImage(c *fiber.Ctx) error {
 	redirect := c.Cookies("LastPath")
 	Token := c.Cookies("Token")
@@ -40,8 +45,39 @@ func UploadImage(c *fiber.Ctx) error {
 	Path := "./views/public/uploads/" + FileName + ".png"
 	DBPath := "/uploads/" + FileName + ".png"
 
-	Database.UploadFile(img, Path, DBPath)
+	p := new(GaleryForm)
 
+	if err := c.BodyParser(p); err != nil {
+		return err
+	}
+
+	Database.UploadFile(img, Path, DBPath, p.Title, p.Description)
+	c.Redirect(redirect)
+	return nil
+}
+
+func EditGalery(c *fiber.Ctx) error {
+	redirect := c.Cookies("LastPath")
+	UserToken := c.Cookies("Token")
+	GaleryToken := c.Params("Token")
+	User, err := Database.FindUserByToken(UserToken)
+	if err != nil {
+		c.Redirect(redirect)
+		return nil
+	}
+
+	if User.Perm != "Admin" {
+		c.Redirect(redirect)
+		return nil
+	}
+
+	p := new(GaleryForm)
+
+	if err := c.BodyParser(p); err != nil {
+		return err
+	}
+
+	Database.UpdateGalery(GaleryToken, p.Title, p.Description)
 	c.Redirect(redirect)
 	return nil
 }

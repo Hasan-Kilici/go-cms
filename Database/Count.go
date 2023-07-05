@@ -42,3 +42,21 @@ func GetUserCount() int {
 	fmt.Printf("Satır sayısı: %d\n", rowCount)
 	return rowCount
 }
+
+func GetGaleryCount() int {
+	db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
+    if err != nil {
+        panic(err.Error())
+    }
+
+	defer db.Close()
+
+	var rowCount int
+	err = db.QueryRow("SELECT COUNT(*) FROM galery").Scan(&rowCount)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	fmt.Printf("Satır sayısı: %d\n", rowCount)
+	return rowCount
+}

@@ -254,3 +254,131 @@ func EditUserPage(c *fiber.Ctx) error {
 
 	return nil
 }
+
+func GaleryPage(c *fiber.Ctx) error {
+	redirect := c.Cookies("LastPath")
+	Token := c.Cookies("Token")
+
+	User , err := Database.FindUserByToken(Token)
+	if err != nil {
+		c.Redirect(redirect)
+		return nil
+	}
+
+	UserInfo := []interface{}{
+		User.ID,
+		User.Username,
+		User.Email,
+		User.Perm,
+	}
+
+	if(User.Perm != "Admin"){
+		c.Redirect(redirect)
+		return nil	
+	} 
+
+	Galery, _ := Database.ListGaleryItems(0,10)
+	GaleryCount := Database.GetGaleryCount()
+
+	cookie := new(fiber.Cookie)
+
+	cookie.Name = "LastPath"
+	cookie.Value = "/admin/galery"
+	cookie.Expires = time.Now().Add(time.Hour * 24 * 365)
+
+	c.Cookie(cookie)
+
+	c.Render("admin/galery", fiber.Map{
+		"title":"Admin galeri",
+		"galery":Galery,
+		"UserInfo":UserInfo,
+		"galeryCount":GaleryCount,
+	})
+
+	return nil
+}
+
+func EditGaleryPage(c *fiber.Ctx) error {
+	Token := c.Cookies("Token")
+	redirect := c.Cookies("LastPath")
+	GaleryToken := c.Params("Token")
+
+	User , err := Database.FindUserByToken(Token)
+	if err != nil {
+		c.Redirect(redirect)
+		return nil
+	}
+
+	if(User.Perm != "Admin"){
+		c.Redirect(redirect)
+		return nil	
+	} 
+
+	Galery, err := Database.FindGaleryPropsByToken(GaleryToken)
+	if err != nil {
+		c.Redirect(redirect)
+		return nil	
+	}
+
+	Image, err := Database.FindPhotoByToken(GaleryToken)
+	if err != nil {
+		c.Redirect(redirect)
+		return nil
+	}
+
+	c.Render("admin/editgalery", fiber.Map{
+		"title":"Kullanıcıyı düzenle",
+		"Image":Image.Path,
+		"GTitle":Galery.Title,
+		"Description":Galery.Description,
+		"Token":Image.Token,
+	})
+
+	return nil
+}
+
+func EditGaleryPageWithPages(c *fiber.Ctx) error {
+	redirect := c.Cookies("LastPath")
+	Token := c.Cookies("Token")
+
+	Page, _ := strconv.Atoi(c.Params("Page"))
+	Skip := Page * 10
+
+	User , err := Database.FindUserByToken(Token)
+	if err != nil {
+		c.Redirect(redirect)
+		return nil
+	}
+
+	UserInfo := []interface{}{
+		User.ID,
+		User.Username,
+		User.Email,
+		User.Perm,
+	}
+
+	if(User.Perm != "Admin"){
+		c.Redirect(redirect)
+		return nil	
+	} 
+
+	Galery, _ := Database.ListGaleryItems(Skip,10)
+	GaleryCount := Database.GetGaleryCount()
+
+	cookie := new(fiber.Cookie)
+
+	cookie.Name = "LastPath"
+	cookie.Value = "/admin/galery"
+	cookie.Expires = time.Now().Add(time.Hour * 24 * 365)
+
+	c.Cookie(cookie)
+
+	c.Render("admin/galery", fiber.Map{
+		"title":"Admin galeri",
+		"galery":Galery,
+		"UserInfo":UserInfo,
+		"galeryCount":GaleryCount,
+	})
+
+	return nil
+}

@@ -3,6 +3,7 @@ package Database
 import (
 	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
+    "fmt"
 )
 
 type Users struct{
@@ -30,6 +31,12 @@ type Tags struct {
     BlogToken   string
 }
 
+type GaleryItem struct {
+	Path        string
+	Title       string
+	Description string
+    Token       string
+}
 
 func ListAllBlogs() ([]Blogs, error) {
     db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
@@ -58,7 +65,6 @@ func ListAllBlogs() ([]Blogs, error) {
     if err := rows.Err(); err != nil {
         return nil, err
     }
-
     return blogs, nil
 }
 
@@ -186,4 +192,40 @@ func ListUsers(skip, length int) ([]Users, error) {
     }
 
     return users, nil
+}
+
+func ListGaleryItems(skip, length int) ([]GaleryItem, error) {
+    db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
+    if err != nil {
+        return nil, err
+    }
+    defer db.Close()
+
+    query := `
+    SELECT galery.path, galerypropertys.title, galerypropertys.description, galery.Token
+    FROM galery
+    JOIN galerypropertys ON galery.Token = galerypropertys.galerytoken LIMIT ?,?
+    `
+
+    rows, err := db.Query(query, skip, length)
+    if err != nil {
+        return nil, err
+    }
+    defer rows.Close()
+
+    var galeryItems []GaleryItem
+    for rows.Next() {
+        var item GaleryItem
+        err := rows.Scan(&item.Path, &item.Title, &item.Description, &item.Token)
+        if err != nil {
+            return nil, err
+        }
+        galeryItems = append(galeryItems, item)
+    }
+
+    if err = rows.Err(); err != nil {
+        return nil, err
+    }
+    fmt.Println(galeryItems)
+    return galeryItems, nil
 }

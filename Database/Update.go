@@ -110,3 +110,25 @@ func UpdateUser(Token ,Username, Email, Perm string){
 
 	fmt.Printf("%d satır düzenlendi\n", rowCount)
 }
+
+func UpdateGalery(Token,Title,Description string){
+	db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
+    if err != nil {
+        fmt.Println(err)
+    }
+
+    defer db.Close()
+
+	query := "UPDATE galerypropertys SET title=?, description=? WHERE galeryToken=?"
+	res, err := db.Exec(query,Title,Description,Token)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	rowCount, err := res.RowsAffected()
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	fmt.Printf("%d satır düzenlendi\n", rowCount)
+}

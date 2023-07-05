@@ -27,9 +27,17 @@ type Blog struct {
 }
 
 type Galery struct {
-    ID          int
-    Token       string
-    Path        string
+    ID              int
+    Token           string
+    Path            string
+}
+
+type GaleryProps struct {
+    ID              int
+    Token           string
+    Title           string
+    Description     string
+    GaleryToken     string
 }
 
 func Login(Email, Password string) (string, error) {
@@ -173,11 +181,12 @@ func FindBlogLike(UserToken, BlogToken string) bool {
     return true
 }
 
-func FindPhotoByToken(Token string) (Galery ,error){
+func FindPhotoByToken(Token string) (Galery, error){
     db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
     if err != nil {
-        return Galery{}, err
+        panic(err.Error())
     }
+
     defer db.Close()
 
     query := "SELECT * FROM galery WHERE token = ?"
@@ -192,5 +201,28 @@ func FindPhotoByToken(Token string) (Galery ,error){
         return Galery{}, err
     }
 
-    return  galery, nil
+    return galery, nil
+}
+
+func FindGaleryPropsByToken(Token string) (GaleryProps, error){
+    db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
+    if err != nil {
+        panic(err.Error())
+    }
+
+    defer db.Close()
+
+    query := "SELECT * FROM galerypropertys WHERE galerytoken = ?"
+    row := db.QueryRow(query, Token)
+
+    var galeryProps GaleryProps
+    err = row.Scan(&galeryProps.ID, &galeryProps.Token, &galeryProps.Title, &galeryProps.Description, &galeryProps.GaleryToken)
+    if err != nil {
+        if err == sql.ErrNoRows {
+            return GaleryProps{}, err
+        }
+        return GaleryProps{}, err
+    }
+
+    return galeryProps, nil
 }
