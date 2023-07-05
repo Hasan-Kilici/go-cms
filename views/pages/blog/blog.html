@@ -2,6 +2,7 @@
 <html>
     <head>
         {{ template "partials/head" .}}
+        <meta name="keywords" content="{{range .Tags}}{{.Tag}},{{end}}">
     </head>
     <body>
        {{ template "partials/navbar" .}}
