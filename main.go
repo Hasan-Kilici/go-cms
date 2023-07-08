@@ -71,6 +71,7 @@ func main() {
 	app.Delete("/delete/product/:Token", ECommerce.DeleteProduct)
 	app.Delete("/delete/user/:Token", Admin.DeleteUser)
 	app.Delete("/delete/galery/:Token", Galery.DeleteGalery)
+	app.Delete("/delete/productphoto/:Token", ECommerce.DeleteProductImage)
 
 	err := app.Listen(":3000")
 	if err != nil {

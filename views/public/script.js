@@ -114,4 +114,30 @@ function deleteUser(userToken) {
       });
   }
 
+  function deleteProductImage(token) {
+    let redirect = getCookie("LastPath")
+    return fetch(`/delete/productphoto/${token}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(response => {
+        if (response.ok) {
+            console.log('Kullanıcı başarıyla silindi.');
+          } else if (response.status === 401) {
+            console.error('Yetkilendirme hatası: Kullanıcı girişi gerekiyor.');
+          } else if (response.status === 403) {
+            console.error('Erişim reddedildi: Yönetici izni gerekiyor.');
+          } else {
+            console.error('Bir hata oluştu.');
+          }
+          setTimeout(()=>{
+              window.location.href = redirect
+          },300)
+      }).catch(error => {
+        console.error('İstek hatası:', error);
+      });
+  }
+
+
   
