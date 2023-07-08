@@ -23,6 +23,8 @@
 Delete fonksiyonları Delete Methodlarına çevrildi
 - Status düzeltmeleri
 Artık redirect yerine Forbidden, Not found , vs. (400,401,404,500,...) statuleri gönderiyor
+- Routerde ki düzeltmeler
+Main.go dosyası artık daha clean
 
 ### Siteden görseller
 ![Ekran görüntüsü 2023-07-05 032223](https://github.com/Hasan-Kilici/go-cms/assets/105741983/fb83c0b9-4e92-4a6b-9909-101600709bea)
