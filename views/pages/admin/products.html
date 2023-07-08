@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        {{ template "partials/head" .}}
+    </head>
+    <body class="dark:bg-gray-700 dark:text-gray-100">
+       {{ template "partials/sidebar" .}}
+       <div class="p-4 sm:ml-64">
+            <h3 class="text-lg">Ürün oluştur</h3>
+            <form action="/create/product" method="post" enctype="multipart/form-data">
+                <div>
+                  <label for="Name">Name:</label>
+                  <input type="text" id="Name" name="Name">
+                </div>
+                <div>
+                  <label for="Description">Description:</label>
+                  <textarea id="Description" name="Description"></textarea>
+                </div>
+                <div>
+                  <label for="Price">Price:</label>
+                  <input type="number" id="Price" name="Price">
+                </div>
+                <div>
+                  <label for="Tags">Tags:</label>
+                  <input type="text" id="Tags" name="Tags">
+                </div>
+                <div>
+                  <label for="Files">Files:</label>
+                  <input type="file" id="Files" name="files" multiple>
+                </div>
+                <div>
+                  <input type="submit" value="Submit">
+                </div>
+              </form>
+   
+
+    <h3 class="text-2xl mt-5 mb-5">Bloglar</h3>
+                     
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg ">
+        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 dark:bg-gray-800">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:bg-gray-900 dark:text-gray-400">
+                <tr>
+                    <th scope="col" class="px-6 py-3">
+                        Ürün fotoğrafı
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Ürün adı
+                    </th scope="col" class="px-6 py-3">
+                    <th scope="col" class="px-6 py-3">
+                        Ürün fiyatı
+                    </th scope="col" class="px-6 py-3">
+                    <th scope="col" class="px-6 py-3">
+                        Sil
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Düzenle
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {{range .Products}}
+                    <tr>
+                        <td class="px-6 py-4">
+                            <img src="{{.ImagePath}}" class="w-[50px] h-[50px]">
+                        </td>
+                        <td class="px-6 py-4">
+                            {{.Name}}
+                        </td>
+                        <td class="px-6 py-4">
+                            {{.Price}}
+                        </td>
+                        <td class="px-6 py-4">
+                            <button onclick="deleteProduct('{{.Token}}')">Sil</button>
+                        </td>
+                        <td class="px-6 py-4">
+                            <a href="/edit/product/{{.Token}}">Düzenle</a>
+                        </td>
+                    </tr>
+                {{end}}    
+            </tbody>
+        </table> 
+        <div style="display:none" id="nf" class="height-[150px] w-full">
+            <h2 class="text-5xl text-bold mt-5 mb-5 text-center">Ürün Bulunamadı</h2>
+        </div>    
+</div>
+<div id="pages" class="mt-5 mb-5 inline-flex gap-1 rounded-md shadow-sm" role="group">
+    
+</div>
+
+  
+</div>
+<script>
+    let product = Number("{{.ProductCount}}");
+    if(product < 1){
+        document.getElementById("nf").style["display"] = "block";
+    } else {
+    for (var i = 0; i <= product; i++) {
+            let page = 0; 
+            if (i-1 % 10 === 0) {
+                pageCount =  Math.floor((i / 10) + 1);
+                page =  Math.floor(i / 10);
+                document.getElementById("pages").innerHTML += `
+                <button onclick="window.location.href = '/admin/products/${page}'" type="button" class="rounded-md dark:bg-gray-800 px-4 py-2 text-sm font-medium text-gray-900 bg-white border-t border-b border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:border-gray-800 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">
+                        ${pageCount}
+                </button>`
+            }
+        }
+    }
+</script>
+</body>
+</html>
