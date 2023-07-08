@@ -7,7 +7,7 @@
 - [X] Kullanıcı yönetimi
 - [X] Blog Beğeni sistemi
 - [ ] Toplu seçme
-- [X] E-ticaret / ürün yönetimi (Şuan yarım yamalak hazır, ürün düzenleme ve ödeme sistemleri eklenecek)
+- [X] E-ticaret / ürün yönetimi ( ödeme sistemleri eklenecek ve toplu ürün yükleme )
 - [ ] Forum yönetii
 - [ ] Doğrulama sistemleri
 - [ ] ReCaptcha
