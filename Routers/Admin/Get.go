@@ -479,7 +479,7 @@ func ProductsPageWithPages(c *fiber.Ctx) error {
 	cookie := new(fiber.Cookie)
 
 	cookie.Name = "LastPath"
-	cookie.Value = "/admin/products"
+	cookie.Value = "/admin/products/"+strconv.Itoa(Page)
 	cookie.Expires = time.Now().Add(time.Hour * 24 * 365)
 
 	c.Cookie(cookie)
@@ -528,6 +528,8 @@ func EditProductPage(c *fiber.Ctx) error {
 	cookie.Name = "LastPath"
 	cookie.Value = "/edit/product/"+ProductToken
 	cookie.Expires = time.Now().Add(time.Hour * 24 * 365)
+
+	c.Cookie(cookie)
 
 	c.Render("admin/editproduct", fiber.Map{
 		"Title":"Ürün düzenle",

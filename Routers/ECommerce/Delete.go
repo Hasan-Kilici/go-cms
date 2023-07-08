@@ -25,3 +25,25 @@ func DeleteProduct(c *fiber.Ctx) error {
 	c.Redirect(redirect)
 	return nil
 }
+
+func DeleteProductImage(c *fiber.Ctx) error {
+	Token := c.Params("Token")
+	userToken := c.Cookies("Token")
+
+	redirect := c.Cookies("LastPath")
+
+	User , err := Database.FindUserByToken(userToken)
+	if err != nil {
+		c.Redirect(redirect)
+		return nil
+	}
+
+	if User.Perm != "Admin" {
+		c.Redirect(redirect)
+		return nil
+	}
+
+	Database.DeleteProductPhoto(Token)
+	c.Redirect(redirect)
+	return nil
+}
