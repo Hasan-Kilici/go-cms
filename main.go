@@ -65,6 +65,7 @@ func main() {
 	app.Post("/edit/blog/:Token", Blog.EditBlog)
 	app.Post("/edit/user/:Token", Admin.EditUser)
 	app.Post("/edit/galery/:Token", Galery.EditGalery)
+	app.Post("/edit/product/:Token", ECommerce.EditProduct)
 
 	app.Delete("/delete/blog/:Token", Blog.DeleteBlog)
 	app.Delete("/delete/product/:Token", ECommerce.DeleteProduct)
