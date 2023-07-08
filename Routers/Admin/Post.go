@@ -21,16 +21,16 @@ func EditUser(c *fiber.Ctx) error {
 	User , err := Database.FindUserByToken(Token)
 	if err != nil {
 		c.Redirect(redirect)
-		return nil
+		return fiber.ErrUnauthorized
 	}
 
 	if User.Perm != "Admin" {
 		c.Redirect(redirect)
-		return nil
+		return fiber.ErrForbidden
 	}
 	
 	if err := c.BodyParser(p); err != nil {
-		return err
+		return fiber.ErrBadRequest
 	}
 
 	Database.UpdateUser(userToken,p.Username,p.Email,p.Perm)

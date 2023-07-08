@@ -38,6 +38,22 @@ type GaleryItem struct {
     Token       string
 }
 
+type Products struct {
+    ID              int
+    Token           string
+    Name            string
+    Price           int
+    Description     string
+    ImagePath       string
+}
+
+type ProductPhoto struct {
+    ID              int
+    Token           string
+    ProductToken    string
+    Path            string
+}
+
 func ListAllBlogs() ([]Blogs, error) {
     db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
     if err != nil {
@@ -228,4 +244,71 @@ func ListGaleryItems(skip, length int) ([]GaleryItem, error) {
     }
     fmt.Println(galeryItems)
     return galeryItems, nil
+}
+
+func ListAllProducts(skip,length int) ([]Products, error){
+    db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
+    if err != nil {
+        return nil, err
+    }
+    defer db.Close()
+
+    query := `
+    SELECT p.*, (SELECT path FROM productimages WHERE productToken = p.token LIMIT 1) AS path
+    FROM products p
+    LIMIT ?, ?
+    `
+
+    rows, err := db.Query(query,skip,length)
+    if err != nil {
+        return nil, err
+    }
+    defer rows.Close()
+    
+    products := []Products{}
+    for rows.Next() {
+        var Product Products
+        err := rows.Scan(&Product.ID, &Product.Token, &Product.Name, &Product.Price, &Product.Description, &Product.ImagePath)
+        if err != nil {
+            return nil, err
+        }
+        products = append(products, Product)
+    }
+
+    if err := rows.Err(); err != nil {
+        return nil, err
+    }
+
+    return products, nil
+}
+
+func ListAllProductImages(ProductToken string) ([]ProductPhoto, error) {
+    db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
+    if err != nil {
+        return nil, err
+    }
+    defer db.Close()
+
+    query := "SELECT * FROM productImages WHERE ProductToken = ?"
+    rows, err := db.Query(query, ProductToken)
+    if err != nil {
+        return nil, err
+    }
+    defer rows.Close()
+
+    Images := []ProductPhoto{}
+    for rows.Next() {
+        var image ProductPhoto
+        err := rows.Scan(&image.ID, &image.Token, &image.ProductToken, &image.Path)
+        if err != nil {
+            return nil, err
+        }
+        Images = append(Images, image)
+    }
+
+    if err := rows.Err(); err != nil {
+        return nil, err
+    }
+
+    return Images, nil
 }

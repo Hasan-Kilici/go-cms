@@ -19,7 +19,7 @@ func EditBlogPage(c *fiber.Ctx) error {
 
 	if User.Perm != "Admin" {
 		c.Redirect(redirect)
-		return nil
+		return fiber.ErrForbidden // 403 Forbidden durumu döndürülür
 	}
 
 	Blog, _ := Database.FindBlogByToken(blogToken)

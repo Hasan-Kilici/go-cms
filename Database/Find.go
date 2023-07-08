@@ -40,6 +40,14 @@ type GaleryProps struct {
     GaleryToken     string
 }
 
+type Product struct {
+    ID              int
+    Token           string
+    Name            string
+    Price           int
+    Description     string
+    ImagePath       string
+}
 func Login(Email, Password string) (string, error) {
 	db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
     if err != nil {
@@ -225,4 +233,25 @@ func FindGaleryPropsByToken(Token string) (GaleryProps, error){
     }
 
     return galeryProps, nil
+}
+
+func FindProductsByToken(Token string) (Product, error){
+	db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
+    if err != nil {
+        return Product{}, err
+    }
+    defer db.Close()
+
+    query := "SELECT * FROM products WHERE token = ?"
+    row := db.QueryRow(query, Token)
+
+    var products Product
+    err = row.Scan(&products.ID, &products.Token, &products.Name, &products.Price, &products.Description)
+    if err != nil {
+        if err == sql.ErrNoRows {
+            return Product{}, err
+        }
+        return Product{}, err
+    }
+    return products, nil
 }

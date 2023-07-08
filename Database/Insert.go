@@ -61,7 +61,7 @@ func CreateBlog(Title, HTML , Tags string){
 		fmt.Println(err)
 	}
 
-	SaveAllTags(Token, Tags)
+	SaveAllBlogTags(Token, Tags)
 	
 	fmt.Printf("%d satır eklendi\n", rowCount)
 }
@@ -88,7 +88,7 @@ func SaveUserLike(BlogToken, UserToken string) {
 	fmt.Printf("%d satır eklendi\n", rowCount)
 }
 
-func SaveAllTags(BlogToken, Tag string) {
+func SaveAllBlogTags(BlogToken, Tag string) {
 	db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
     if err != nil {
         panic(err.Error())
@@ -100,7 +100,7 @@ func SaveAllTags(BlogToken, Tag string) {
 	TagCount := len(Tags)
 	for i := 0;i < TagCount;i++ {
 		Token := Utils.GenerateToken(31)
-		res, err := db.Exec("INSERT INTO tags VALUES (?,?,?,?)","",Token,Tags[i],BlogToken)
+		res, err := db.Exec("INSERT INTO tags VALUES (?,?,?,?,?)","",Token,Tags[i],BlogToken,"")
 		if err != nil {
 			fmt.Println(err)
 		}
@@ -156,5 +156,81 @@ func SaveImageProps(galeryToken, title, description string) {
 		fmt.Println(err)
 	}
 	
+	fmt.Printf("%d satır eklendi\n", rowCount)
+}
+
+
+func SaveAllProductTags(ProductToken, Tag string) {
+	db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
+    if err != nil {
+        panic(err.Error())
+    }
+
+    defer db.Close()
+
+	Tags := strings.Split(Tag, ",")
+	TagCount := len(Tags)
+	for i := 0;i < TagCount;i++ {
+		Token := Utils.GenerateToken(31)
+		res, err := db.Exec("INSERT INTO tags VALUES (?,?,?,?,?)","",Token,Tags[i],"",ProductToken)
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		rowCount, err := res.RowsAffected()
+		if err != nil {
+			fmt.Println(err)
+		}
+		fmt.Printf("%d satır eklendi\n", rowCount)
+	}
+} 
+
+func SaveAllProductImages(ProductToken, ImagePaths string) {
+	db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
+    if err != nil {
+        panic(err.Error())
+    }
+
+    defer db.Close()
+
+	Images := strings.Split(ImagePaths, ",")
+	ImagesCount:= len(Images)
+
+	for i := 0;i < ImagesCount;i++ {
+		Token := Utils.GenerateToken(31)
+		res, err := db.Exec("INSERT INTO productImages VALUES (?,?,?,?)","",Token,ProductToken,Images[i])
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		rowCount, err := res.RowsAffected()
+		if err != nil {
+			fmt.Println(err)
+		}
+		fmt.Printf("%d satır eklendi\n", rowCount)
+	}
+}
+
+func CreateProduct(Name, Description, Tags, imagePaths string, Price int){
+	db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
+    if err != nil {
+        panic(err.Error())
+    }
+
+    defer db.Close()
+
+	Token := Utils.GenerateToken(31)
+	res, err := db.Exec("INSERT INTO products VALUES (?,?,?,?,?)","",Token,Name,Price,Description)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	rowCount, err := res.RowsAffected()
+	if err != nil {
+		fmt.Println(err)
+	}
+	
+	SaveAllProductTags(Token, Tags)
+	SaveAllProductImages(Token, imagePaths)
 	fmt.Printf("%d satır eklendi\n", rowCount)
 }

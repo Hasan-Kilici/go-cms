@@ -60,6 +60,7 @@ func EditGalery(c *fiber.Ctx) error {
 	redirect := c.Cookies("LastPath")
 	UserToken := c.Cookies("Token")
 	GaleryToken := c.Params("Token")
+
 	User, err := Database.FindUserByToken(UserToken)
 	if err != nil {
 		c.Redirect(redirect)
@@ -78,6 +79,7 @@ func EditGalery(c *fiber.Ctx) error {
 	}
 
 	Database.UpdateGalery(GaleryToken, p.Title, p.Description)
+	
 	c.Redirect(redirect)
 	return nil
 }

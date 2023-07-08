@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"log"
+	"strings"
 )
 
 func DeleteBlog(Token string){
@@ -189,4 +190,100 @@ func DeleteGaleryProps(GToken string) {
 	}
 
 	fmt.Printf("%d satır Silindi\n", rowCount)		
+}
+
+func DeleteAllProductImages(ImagePaths string) {
+	Images := strings.Split(ImagePaths, ",")
+	ImageCount := len(Images)
+
+	for i := 0;i < ImageCount;i++ {
+
+		Path := "./views/public"+Images[i]
+		fmt.Println(Path)
+		e := os.Remove(Path)
+		if e != nil {
+			log.Fatal(e)
+		}
+	}
+} 
+
+func DeleteProduct(Token string) {
+	var deletedPhotoPaths string
+	db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
+    if err != nil {
+        panic(err.Error())
+    }
+
+    defer db.Close()
+
+	query := "SELECT path From ProductImages Where ProductToken = ?" 
+	rows, err := db.Query(query,Token)
+	if err != nil {
+        panic(err.Error())
+    }
+
+	for rows.Next() {
+		var path string
+		err := rows.Scan(&path)
+		if err != nil {
+			panic(err.Error())
+		}
+		
+		deletedPhotoPaths += path + ","
+    }
+	deletedPhotoPaths = strings.TrimRight(deletedPhotoPaths, ",")
+
+	_, err = db.Exec("DELETE FROM productImages WHERE producttoken = ?", Token)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	_, err = db.Exec("DELETE FROM tags WHERE producttoken = ?", Token)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	_, err = db.Exec("DELETE FROM products WHERE token = ?", Token)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	DeleteAllProductImages(deletedPhotoPaths)
+}
+
+func DeleteProductPhoto(Token string){
+	var deletedPhotoPath string
+	db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
+    if err != nil {
+        panic(err.Error())
+    }
+
+    defer db.Close()
+
+	query := "SELECT path From ProductImages Where Token = ?" 
+	rows, err := db.Query(query,Token)
+	if err != nil {
+        panic(err.Error())
+    }
+
+	for rows.Next() {
+		var path string
+		err := rows.Scan(&path)
+		if err != nil {
+			panic(err.Error())
+		}
+		
+		deletedPhotoPath += path
+    }
+
+	Path := "./views/public/"+deletedPhotoPath
+	e := os.Remove(Path)
+	if e != nil {
+		log.Fatal(e)
+	}
+
+	_, err = db.Exec("DELETE FROM productImages WHERE token = ?", Token)
+	if err != nil {
+		panic(err.Error())
+	}
 }

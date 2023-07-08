@@ -14,7 +14,7 @@ func HomePage(c *fiber.Ctx) error {
 	User , err := Database.FindUserByToken(Token)
 	if err != nil {
 		c.Redirect(redirect)
-		return nil
+		return fiber.ErrUnauthorized
 	}
 
 	UserInfo := []interface{}{
@@ -26,7 +26,7 @@ func HomePage(c *fiber.Ctx) error {
 
 	if(User.Perm != "Admin"){
 		c.Redirect(redirect)
-		return nil	
+		return fiber.ErrForbidden
 	} 
 
 	cookie := new(fiber.Cookie)
@@ -48,13 +48,17 @@ func BlogsPage(c *fiber.Ctx) error{
 	Token := c.Cookies("Token")
 	redirect := c.Cookies("LastPath")
 
-	Blogs, _ := Database.ListBlogs(0,10)
+	Blogs, err := Database.ListBlogs(0,10)
+	if err != nil {
+		return fiber.ErrInternalServerError
+	}
+
 	BlogCount := Database.GetBlogCount()
 
 	User , err := Database.FindUserByToken(Token)
 	if err != nil {
 		c.Redirect(redirect)
-		return nil
+		return fiber.ErrUnauthorized
 	}
 
 	UserInfo := []interface{}{
@@ -66,7 +70,7 @@ func BlogsPage(c *fiber.Ctx) error{
 
 	if(User.Perm != "Admin"){
 		c.Redirect(redirect)
-		return nil	
+		return fiber.ErrForbidden
 	} 
 
 	cookie := new(fiber.Cookie)
@@ -89,15 +93,21 @@ func BlogsPage(c *fiber.Ctx) error{
 func BlogsPageWithPages(c *fiber.Ctx) error{
 	Token := c.Cookies("Token")
 	redirect := c.Cookies("LastPath")
-	Page, _ := strconv.Atoi(c.Params("Page"))
+	Page, err := strconv.Atoi(c.Params("Page"))
+	if err != nil {
+		return fiber.ErrBadRequest
+	}
 	Skip := Page * 10
-	Blogs, _ := Database.ListBlogs(Skip,10)
+	Blogs, err := Database.ListBlogs(Skip,10)
+	if err != nil {
+		return fiber.ErrInternalServerError
+	}
 	BlogCount := Database.GetBlogCount()
 
 	User , err := Database.FindUserByToken(Token)
 	if err != nil {
 		c.Redirect(redirect)
-		return nil
+		return fiber.ErrUnauthorized
 	}
 
 	UserInfo := []interface{}{
@@ -109,7 +119,7 @@ func BlogsPageWithPages(c *fiber.Ctx) error{
 
 	if(User.Perm != "Admin"){
 		c.Redirect(redirect)
-		return nil	
+		return fiber.ErrForbidden
 	} 
 
 	cookie := new(fiber.Cookie)
@@ -140,11 +150,15 @@ func UsersPage(c *fiber.Ctx) error {
 	redirect := c.Cookies("LastPath")
 	UserCount := Database.GetUserCount()
 
-	Users, _ := Database.ListUsers(0,10)
+	Users, err := Database.ListUsers(0,10)
+	if err != nil {
+		return fiber.ErrInternalServerError 
+	}
+
 	User , err := Database.FindUserByToken(Token)
 	if err != nil {
 		c.Redirect(redirect)
-		return nil
+		return fiber.ErrUnauthorized 
 	}
 
 	UserInfo := []interface{}{
@@ -156,7 +170,7 @@ func UsersPage(c *fiber.Ctx) error {
 
 	if(User.Perm != "Admin"){
 		c.Redirect(redirect)
-		return nil	
+		return fiber.ErrForbidden 
 	} 
 
 	cookie := new(fiber.Cookie)
@@ -179,16 +193,22 @@ func UsersPage(c *fiber.Ctx) error {
 func UsersPageWithPages(c *fiber.Ctx) error {
 	Token := c.Cookies("Token")
 	redirect := c.Cookies("LastPath")
-	Page, _ := strconv.Atoi(c.Params("Page"))
+	Page, err := strconv.Atoi(c.Params("Page"))
+	if err != nil {
+		return fiber.ErrBadRequest
+	}
 	Skip := Page * 10
 
 	UserCount := Database.GetUserCount()
 
-	Users, _ := Database.ListUsers(Skip,10)
+	Users, err := Database.ListUsers(Skip,10)
+	if err != nil {
+		return fiber.ErrInternalServerError 
+	}
 	User , err := Database.FindUserByToken(Token)
 	if err != nil {
 		c.Redirect(redirect)
-		return nil
+		return fiber.ErrUnauthorized 
 	}
 
 	UserInfo := []interface{}{
@@ -200,7 +220,7 @@ func UsersPageWithPages(c *fiber.Ctx) error {
 
 	if(User.Perm != "Admin"){
 		c.Redirect(redirect)
-		return nil	
+		return fiber.ErrForbidden 
 	} 
 
 	cookie := new(fiber.Cookie)
@@ -220,7 +240,6 @@ func UsersPageWithPages(c *fiber.Ctx) error {
 	return nil
 }
 
-
 func EditUserPage(c *fiber.Ctx) error {
 	Token := c.Cookies("Token")
 	redirect := c.Cookies("LastPath")
@@ -229,18 +248,18 @@ func EditUserPage(c *fiber.Ctx) error {
 	User , err := Database.FindUserByToken(Token)
 	if err != nil {
 		c.Redirect(redirect)
-		return nil
+		return fiber.ErrUnauthorized 
 	}
 
 	if(User.Perm != "Admin"){
 		c.Redirect(redirect)
-		return nil	
+		return fiber.ErrForbidden 
 	} 
 
 	EditUser, err := Database.FindUserByToken(UserToken)
 	if err != nil {
 		c.Redirect(redirect)
-		return nil
+		return fiber.ErrNotFound 
 	}
 
 	c.Render("admin/edituser", fiber.Map{
@@ -262,22 +281,18 @@ func GaleryPage(c *fiber.Ctx) error {
 	User , err := Database.FindUserByToken(Token)
 	if err != nil {
 		c.Redirect(redirect)
-		return nil
-	}
-
-	UserInfo := []interface{}{
-		User.ID,
-		User.Username,
-		User.Email,
-		User.Perm,
+		return fiber.ErrUnauthorized 
 	}
 
 	if(User.Perm != "Admin"){
 		c.Redirect(redirect)
-		return nil	
+		return fiber.ErrForbidden 
 	} 
 
-	Galery, _ := Database.ListGaleryItems(0,10)
+	Galery, err := Database.ListGaleryItems(0,10)
+	if err != nil {
+		return fiber.ErrInternalServerError 
+	}
 	GaleryCount := Database.GetGaleryCount()
 
 	cookie := new(fiber.Cookie)
@@ -291,7 +306,7 @@ func GaleryPage(c *fiber.Ctx) error {
 	c.Render("admin/galery", fiber.Map{
 		"title":"Admin galeri",
 		"galery":Galery,
-		"UserInfo":UserInfo,
+		"UserInfo":User,
 		"galeryCount":GaleryCount,
 	})
 
@@ -306,24 +321,24 @@ func EditGaleryPage(c *fiber.Ctx) error {
 	User , err := Database.FindUserByToken(Token)
 	if err != nil {
 		c.Redirect(redirect)
-		return nil
+		return fiber.ErrUnauthorized 
 	}
 
 	if(User.Perm != "Admin"){
 		c.Redirect(redirect)
-		return nil	
+		return fiber.ErrForbidden 
 	} 
 
 	Galery, err := Database.FindGaleryPropsByToken(GaleryToken)
 	if err != nil {
 		c.Redirect(redirect)
-		return nil	
+		return fiber.ErrNotFound 
 	}
 
 	Image, err := Database.FindPhotoByToken(GaleryToken)
 	if err != nil {
 		c.Redirect(redirect)
-		return nil
+		return fiber.ErrNotFound 
 	}
 
 	c.Render("admin/editgalery", fiber.Map{
@@ -341,28 +356,27 @@ func EditGaleryPageWithPages(c *fiber.Ctx) error {
 	redirect := c.Cookies("LastPath")
 	Token := c.Cookies("Token")
 
-	Page, _ := strconv.Atoi(c.Params("Page"))
+	Page, err := strconv.Atoi(c.Params("Page"))
+	if err != nil {
+		return fiber.ErrBadRequest
+	}
 	Skip := Page * 10
 
 	User , err := Database.FindUserByToken(Token)
 	if err != nil {
 		c.Redirect(redirect)
-		return nil
-	}
-
-	UserInfo := []interface{}{
-		User.ID,
-		User.Username,
-		User.Email,
-		User.Perm,
+		return fiber.ErrUnauthorized 
 	}
 
 	if(User.Perm != "Admin"){
 		c.Redirect(redirect)
-		return nil	
+		return fiber.ErrForbidden
 	} 
 
-	Galery, _ := Database.ListGaleryItems(Skip,10)
+	Galery, err := Database.ListGaleryItems(Skip,10)
+	if err != nil {
+		return fiber.ErrInternalServerError 
+	}
 	GaleryCount := Database.GetGaleryCount()
 
 	cookie := new(fiber.Cookie)
@@ -376,9 +390,150 @@ func EditGaleryPageWithPages(c *fiber.Ctx) error {
 	c.Render("admin/galery", fiber.Map{
 		"title":"Admin galeri",
 		"galery":Galery,
-		"UserInfo":UserInfo,
+		"UserInfo":User,
 		"galeryCount":GaleryCount,
 	})
 
+	return nil
+}
+
+func ProductsPage(c *fiber.Ctx) error {
+	redirect := c.Cookies("LastPath")
+	Token := c.Cookies("Token")
+
+	User , err := Database.FindUserByToken(Token)
+	if err != nil {
+		c.Redirect(redirect)
+		return fiber.ErrUnauthorized 
+	}
+
+	if User.Perm != "Admin"{
+		c.Redirect(redirect)
+		return fiber.ErrForbidden 
+	}
+
+	ProductCount := Database.GetProductCount()
+	Products , err := Database.ListAllProducts(0,10)
+	if err != nil {
+		return fiber.ErrInternalServerError 
+	}
+
+	UserInfo := []interface{}{
+		User.ID,
+		User.Username,
+		User.Email,
+		User.Perm,
+	}
+
+	cookie := new(fiber.Cookie)
+
+	cookie.Name = "LastPath"
+	cookie.Value = "/admin/products"
+	cookie.Expires = time.Now().Add(time.Hour * 24 * 365)
+
+	c.Cookie(cookie)
+
+	c.Render("admin/products", fiber.Map{
+		"Title":"Admin Ürünler",
+		"Products": Products,
+		"UserInfo":UserInfo,
+		"ProductCount":ProductCount,
+	})
+	return nil
+}
+
+func ProductsPageWithPages(c *fiber.Ctx) error {
+	redirect := c.Cookies("LastPath")
+	Token := c.Cookies("Token")
+
+	Page, err := strconv.Atoi(c.Params("Page"))
+	if err != nil {
+		return fiber.ErrBadRequest
+	}
+	Skip := Page * 10
+
+	User , err := Database.FindUserByToken(Token)
+	if err != nil {
+		c.Redirect(redirect)
+		return fiber.ErrUnauthorized 
+	}
+
+	if User.Perm != "Admin"{
+		c.Redirect(redirect)
+		return fiber.ErrForbidden 
+	}
+
+	ProductCount := Database.GetProductCount()
+	Products , err := Database.ListAllProducts(Skip,10)
+	if err != nil {
+		return fiber.ErrInternalServerError 
+	}
+
+	UserInfo := []interface{}{
+		User.ID,
+		User.Username,
+		User.Email,
+		User.Perm,
+	}
+
+	cookie := new(fiber.Cookie)
+
+	cookie.Name = "LastPath"
+	cookie.Value = "/admin/products"
+	cookie.Expires = time.Now().Add(time.Hour * 24 * 365)
+
+	c.Cookie(cookie)
+
+	c.Render("admin/products", fiber.Map{
+		"Title":"Admin Ürünler",
+		"Products": Products,
+		"UserInfo":UserInfo,
+		"ProductCount":ProductCount,
+	})
+	return nil
+}
+
+func EditProductPage(c *fiber.Ctx) error {
+	redirect := c.Cookies("LastPath")
+	ProductToken := c.Params("Token")
+	Token := c.Cookies("Token")
+
+	User , err := Database.FindUserByToken(Token)
+	if err != nil {
+		c.Redirect(redirect)
+		return fiber.ErrUnauthorized 
+	}
+
+	if User.Perm != "Admin"{
+		c.Redirect(redirect)
+		return fiber.ErrForbidden 
+	}
+
+	Product, err := Database.FindProductsByToken(Token)
+	if err != nil {
+		c.Redirect(redirect)
+		return fiber.ErrNotFound 
+	}
+
+	ProductImages , err := Database.ListAllProductImages(Token)
+	if err != nil {
+		c.Redirect(redirect)
+		return fiber.ErrNotFound 
+	}
+
+	cookie := new(fiber.Cookie)
+
+	cookie.Name = "LastPath"
+	cookie.Value = "/edit/product/"+ProductToken
+	cookie.Expires = time.Now().Add(time.Hour * 24 * 365)
+
+	c.Render("admin/editproduct", fiber.Map{
+		"Title":"Ürün düzenle",
+		"Name": Product.Name,
+		"Price": Product.Price,
+		"Description": Product.Description,
+		"PToken": Product.Token,
+		"Images": ProductImages,
+	})
 	return nil
 }
