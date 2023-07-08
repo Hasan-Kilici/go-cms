@@ -7,7 +7,7 @@
 - [X] Kullanıcı yönetimi
 - [X] Blog Beğeni sistemi
 - [ ] Toplu seçme
-- [ ] E-ticaret / ürün yönetimi
+- [X] E-ticaret / ürün yönetimi (Şuan yarım yamalak hazır, ürün düzenleme ve ödeme sistemleri eklenecek)
 - [ ] Forum yönetii
 - [ ] Doğrulama sistemleri
 - [ ] ReCaptcha
@@ -17,6 +17,12 @@
 - [ ] WYSIWYG
 - [X] SEO
 - [ ] Chart
+
+### Yapılan düzeltmeler
+- Ufak Method düzeltmeleri
+Delete fonksiyonları Delete Methodlarına çevrildi
+- Status düzeltmeleri
+Artık redirect yerine Forbidden, Not found , vs. (400,401,404,500,...) statuleri gönderiyor
 
 ### Siteden görseller
 ![Ekran görüntüsü 2023-07-05 032223](https://github.com/Hasan-Kilici/go-cms/assets/105741983/fb83c0b9-4e92-4a6b-9909-101600709bea)
