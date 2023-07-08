@@ -132,3 +132,31 @@ func UpdateGalery(Token,Title,Description string){
 
 	fmt.Printf("%d satır düzenlendi\n", rowCount)
 }
+
+func UpdateProduct(Token , Name, Description, Tags string, Price int) {
+	db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
+    if err != nil {
+        fmt.Println(err)
+    }
+
+    defer db.Close()
+
+	query := "UPDATE products SET name=?, price=?,description=? WHERE Token=?"
+	res, err := db.Exec(query,Name,Price,Description,Token)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	rowCount, err := res.RowsAffected()
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	fmt.Printf("%d satır düzenlendi\n", rowCount)
+	_, err = db.Exec("DELETE FROM tags WHERE producttoken = ?", Token)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	SaveAllProductTags(Token, Tags)
+}

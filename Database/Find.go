@@ -48,6 +48,14 @@ type Product struct {
     Description     string
     ImagePath       string
 }
+
+type EditProduct struct {
+    ID              int
+    Token           string
+    Name            string
+    Price           int
+    Description     string
+}
 func Login(Email, Password string) (string, error) {
 	db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
     if err != nil {
@@ -235,23 +243,23 @@ func FindGaleryPropsByToken(Token string) (GaleryProps, error){
     return galeryProps, nil
 }
 
-func FindProductsByToken(Token string) (Product, error){
+func FindProductsByToken(Token string) (EditProduct, error){
 	db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
     if err != nil {
-        return Product{}, err
+        return EditProduct{}, err
     }
     defer db.Close()
 
-    query := "SELECT * FROM products WHERE token = ?"
+    query := "SELECT * FROM products WHERE Token = ?"
     row := db.QueryRow(query, Token)
 
-    var products Product
+    var products EditProduct
     err = row.Scan(&products.ID, &products.Token, &products.Name, &products.Price, &products.Description)
     if err != nil {
         if err == sql.ErrNoRows {
-            return Product{}, err
+            return EditProduct{}, err
         }
-        return Product{}, err
+        return EditProduct{}, err
     }
     return products, nil
 }

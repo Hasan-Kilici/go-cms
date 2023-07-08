@@ -14,7 +14,6 @@ type ProductForm struct {
 	Tags string `json:"Tags" xml:"Tags" form:"Tags"`
 }
 
-
 func CreateProduct(c *fiber.Ctx) error {
 	redirect := c.Cookies("LastPath")
 	Token := c.Cookies("Token")
@@ -70,6 +69,33 @@ func CreateProduct(c *fiber.Ctx) error {
 	}
 
 	Database.CreateProduct(p.Name, p.Description, p.Tags, fileNames, p.Price)
+	c.Redirect(redirect)
+	return nil
+}
+
+func EditProduct(c *fiber.Ctx) error {
+	redirect := c.Cookies("LastPath")
+	Token := c.Cookies("Token")
+	ProductToken := c.Params("Token")
+
+	p := new(ProductForm)
+
+	if err := c.BodyParser(p); err != nil {
+		return err
+	}
+
+	User , err := Database.FindUserByToken(Token)
+	if err != nil {
+		c.Redirect(redirect)
+		return nil
+	}
+
+	if User.Perm != "Admin" {
+		c.Redirect(redirect)
+		return nil
+	}
+
+	Database.UpdateProduct(ProductToken, p.Name, p.Description, p.Tags, p.Price)
 	c.Redirect(redirect)
 	return nil
 }

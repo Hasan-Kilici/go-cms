@@ -25,11 +25,13 @@ type Blogs struct {
 }
 
 type Tags struct {
-    ID          int
-    Token       string
-    Tag         string
-    BlogToken   string
+    ID              int
+    Token           string
+    Tag             string
+    BlogToken       string
+    ProductToken    string
 }
+
 
 type GaleryItem struct {
 	Path        string
@@ -130,7 +132,7 @@ func ListAllBlogTags(BlogToken string) ([]Tags, error) {
     tags := []Tags{}
     for rows.Next() {
         var tag Tags
-        err := rows.Scan(&tag.ID, &tag.Token, &tag.Tag, &tag.BlogToken)
+        err := rows.Scan(&tag.ID, &tag.Token, &tag.Tag, &tag.BlogToken, &tag.ProductToken)
         if err != nil {
             return nil,err
         }
@@ -289,8 +291,8 @@ func ListAllProductImages(ProductToken string) ([]ProductPhoto, error) {
     }
     defer db.Close()
 
-    query := "SELECT * FROM productImages WHERE ProductToken = ?"
-    rows, err := db.Query(query, ProductToken)
+    query := "SELECT * FROM productImages"
+    rows, err := db.Query(query)
     if err != nil {
         return nil, err
     }
@@ -303,7 +305,10 @@ func ListAllProductImages(ProductToken string) ([]ProductPhoto, error) {
         if err != nil {
             return nil, err
         }
-        Images = append(Images, image)
+        
+        if image.ProductToken == ProductToken {
+            Images = append(Images, image)
+        }
     }
 
     if err := rows.Err(); err != nil {
@@ -311,4 +316,37 @@ func ListAllProductImages(ProductToken string) ([]ProductPhoto, error) {
     }
 
     return Images, nil
+}
+
+func ListAllProductTags(ProductToken string) ([]Tags, error) {
+    db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
+    if err != nil {
+        return nil, err
+    }
+    defer db.Close()
+
+    query := "SELECT * FROM tags WHERE ProductToken=?"
+    rows, err := db.Query(query,ProductToken)
+
+    defer rows.Close()
+
+    tags := []Tags{}
+    for rows.Next() {
+        var tag Tags
+        err := rows.Scan(&tag.ID, &tag.Token, &tag.Tag, &tag.BlogToken, &tag.ProductToken)
+        if err != nil {
+            return nil,err
+        }
+        tags = append(tags, tag)
+    }
+
+    if err != nil {
+        return nil, err
+    }
+   
+    if err := rows.Err(); err != nil {
+        return nil, err
+    }
+
+    return tags, nil
 }

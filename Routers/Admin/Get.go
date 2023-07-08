@@ -509,17 +509,19 @@ func EditProductPage(c *fiber.Ctx) error {
 		return fiber.ErrForbidden 
 	}
 
-	Product, err := Database.FindProductsByToken(Token)
+	Product, err := Database.FindProductsByToken(ProductToken)
 	if err != nil {
 		c.Redirect(redirect)
 		return fiber.ErrNotFound 
 	}
 
-	ProductImages , err := Database.ListAllProductImages(Token)
+	ProductImages , err := Database.ListAllProductImages(ProductToken)
 	if err != nil {
 		c.Redirect(redirect)
 		return fiber.ErrNotFound 
 	}
+
+	ProductTags, _ := Database.ListAllProductTags(ProductToken)
 
 	cookie := new(fiber.Cookie)
 
@@ -534,6 +536,7 @@ func EditProductPage(c *fiber.Ctx) error {
 		"Description": Product.Description,
 		"PToken": Product.Token,
 		"Images": ProductImages,
+		"Tags": ProductTags,
 	})
 	return nil
 }
