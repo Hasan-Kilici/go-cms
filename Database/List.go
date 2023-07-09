@@ -1,8 +1,6 @@
 package Database
 
 import (
-	"database/sql"
-	_ "github.com/go-sql-driver/mysql"
     "fmt"
 )
 
@@ -57,12 +55,6 @@ type ProductPhoto struct {
 }
 
 func ListAllBlogs() ([]Blogs, error) {
-    db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
-    if err != nil {
-        return nil, err
-    }
-    defer db.Close()
-
     query := "SELECT * FROM blogs"
     rows, err := db.Query(query)
     if err != nil {
@@ -87,12 +79,6 @@ func ListAllBlogs() ([]Blogs, error) {
 }
 
 func ListAllUsers() ([]Users, error) {
-    db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
-    if err != nil {
-        return nil, err
-    }
-    defer db.Close()
-
     query := "SELECT * FROM users"
     rows, err := db.Query(query)
     if err != nil {
@@ -118,12 +104,6 @@ func ListAllUsers() ([]Users, error) {
 }
 
 func ListAllBlogTags(BlogToken string) ([]Tags, error) {
-    db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
-    if err != nil {
-        return nil, err
-    }
-    defer db.Close()
-
     query := "SELECT * FROM tags WHERE BlogToken=?"
     rows, err := db.Query(query,BlogToken)
 
@@ -151,12 +131,6 @@ func ListAllBlogTags(BlogToken string) ([]Tags, error) {
 }
 
 func ListBlogs(skip,length int) ([]Blogs, error) {
-    db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
-    if err != nil {
-        return nil, err
-    }
-    defer db.Close()
-
     query := "SELECT * FROM blogs LIMIT ?, ?"
     rows, err := db.Query(query,skip,length)
     if err != nil {
@@ -182,12 +156,6 @@ func ListBlogs(skip,length int) ([]Blogs, error) {
 }
 
 func ListUsers(skip, length int) ([]Users, error) {
-    db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
-    if err != nil {
-        return nil, err
-    }
-    defer db.Close()
-
     query := "SELECT * FROM users LIMIT ?, ?"
     rows, err := db.Query(query,skip,length)
     if err != nil {
@@ -213,12 +181,6 @@ func ListUsers(skip, length int) ([]Users, error) {
 }
 
 func ListGaleryItems(skip, length int) ([]GaleryItem, error) {
-    db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
-    if err != nil {
-        return nil, err
-    }
-    defer db.Close()
-
     query := `
     SELECT galery.path, galerypropertys.title, galerypropertys.description, galery.Token
     FROM galery
@@ -249,12 +211,6 @@ func ListGaleryItems(skip, length int) ([]GaleryItem, error) {
 }
 
 func ListAllProducts(skip,length int) ([]Products, error){
-    db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
-    if err != nil {
-        return nil, err
-    }
-    defer db.Close()
-
     query := `
     SELECT p.*, (SELECT path FROM productimages WHERE productToken = p.token LIMIT 1) AS path
     FROM products p
@@ -285,12 +241,6 @@ func ListAllProducts(skip,length int) ([]Products, error){
 }
 
 func ListAllProductImages(ProductToken string) ([]ProductPhoto, error) {
-    db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
-    if err != nil {
-        return nil, err
-    }
-    defer db.Close()
-
     query := "SELECT * FROM productImages"
     rows, err := db.Query(query)
     if err != nil {
@@ -319,12 +269,6 @@ func ListAllProductImages(ProductToken string) ([]ProductPhoto, error) {
 }
 
 func ListAllProductTags(ProductToken string) ([]Tags, error) {
-    db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
-    if err != nil {
-        return nil, err
-    }
-    defer db.Close()
-
     query := "SELECT * FROM tags WHERE ProductToken=?"
     rows, err := db.Query(query,ProductToken)
 

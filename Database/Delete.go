@@ -1,8 +1,6 @@
 package Database
 
 import (
-	"database/sql"
-	_ "github.com/go-sql-driver/mysql"
 	"fmt"
 	"os"
 	"log"
@@ -10,13 +8,6 @@ import (
 )
 
 func DeleteBlog(Token string){
-	db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
-    if err != nil {
-        panic(err.Error())
-    }
-
-    defer db.Close()
-	
 	query := "DELETE FROM blogs WHERE Token=?"
 	res, err := db.Exec(query,Token)
 	if err != nil {
@@ -35,13 +26,6 @@ func DeleteBlog(Token string){
 }
 
 func DeleteBlogTags(Token string) {
-	db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
-    if err != nil {
-        panic(err.Error())
-    }
-
-    defer db.Close()
-	
 	query := "DELETE FROM tags WHERE BlogToken=?"
 	res, err := db.Exec(query,Token)
 	if err != nil {
@@ -59,13 +43,6 @@ func DeleteBlogTags(Token string) {
 }
 
 func DeleteUser(Token string){
-	db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
-    if err != nil {
-        panic(err.Error())
-    }
-
-    defer db.Close()
-	
 	query := "DELETE FROM users WHERE Token=?" 
 	res, err := db.Exec(query,Token)
 	if err != nil {
@@ -83,13 +60,6 @@ func DeleteUser(Token string){
 }
 
 func DeleteUserLike(UserToken, BlogToken string){
-	db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
-    if err != nil {
-        panic(err.Error())
-    }
-
-    defer db.Close()
-	
 	query := "DELETE FROM likes WHERE UserToken=? AND BlogToken=?" 
 	res, err := db.Exec(query,UserToken,BlogToken)
 	if err != nil {
@@ -107,13 +77,6 @@ func DeleteUserLike(UserToken, BlogToken string){
 }
 
 func DeleteLikes(BlogToken string) {
-	db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
-    if err != nil {
-        panic(err.Error())
-    }
-
-    defer db.Close()
-	
 	query := "DELETE FROM likes WHERE BlogToken=?" 
 	res, err := db.Exec(query,BlogToken)
 	if err != nil {
@@ -143,13 +106,6 @@ func DeleteGalery(Token string) {
         log.Fatal(e)
     }
 
-	db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
-    if err != nil {
-        panic(err.Error())
-    }
-
-    defer db.Close()
-
 	query := "DELETE FROM galery WHERE Token=?" 
 	res, err := db.Exec(query,Token)
 	if err != nil {
@@ -169,13 +125,6 @@ func DeleteGalery(Token string) {
 }
 
 func DeleteGaleryProps(GToken string) {
-	db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
-    if err != nil {
-        panic(err.Error())
-    }
-
-    defer db.Close()
-
 	query := "DELETE FROM galerypropertys WHERE galerytoken=?" 
 	res, err := db.Exec(query,GToken)
 	if err != nil {
@@ -209,12 +158,6 @@ func DeleteAllProductImages(ImagePaths string) {
 
 func DeleteProduct(Token string) {
 	var deletedPhotoPaths string
-	db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
-    if err != nil {
-        panic(err.Error())
-    }
-
-    defer db.Close()
 
 	query := "SELECT path From ProductImages Where ProductToken = ?" 
 	rows, err := db.Query(query,Token)
@@ -253,12 +196,6 @@ func DeleteProduct(Token string) {
 
 func DeleteProductPhoto(Token string){
 	var deletedPhotoPath string
-	db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
-    if err != nil {
-        panic(err.Error())
-    }
-
-    defer db.Close()
 
 	query := "SELECT path From ProductImages Where Token = ?" 
 	rows, err := db.Query(query,Token)

@@ -56,14 +56,8 @@ type EditProduct struct {
     Price           int
     Description     string
 }
+
 func Login(Email, Password string) (string, error) {
-	db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
-    if err != nil {
-        panic(err.Error())
-    }
-
-    defer db.Close()
-
 	query := "SELECT Token, Password FROM users WHERE Email = ?"
 	row := db.QueryRow(query, Email)
 
@@ -79,18 +73,11 @@ func Login(Email, Password string) (string, error) {
 }
 
 func FindUserByEmail(Email string) bool {
-    db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
-    if err != nil {
-        panic(err.Error())
-    }
-
-    defer db.Close()
-
     query := "SELECT COUNT(*) FROM users WHERE Email = ?"
     row := db.QueryRow(query, Email)
 
     var count int
-    err = row.Scan(&count)
+    err := row.Scan(&count)
     if err != nil {
         return false
     }
@@ -103,18 +90,11 @@ func FindUserByEmail(Email string) bool {
 }
 
 func FindUserByUsername(Username string) bool {
-    db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
-    if err != nil {
-        panic(err.Error())
-    }
-
-    defer db.Close()
-
     query := "SELECT COUNT(*) FROM users WHERE username = ?"
     row := db.QueryRow(query, Username)
 
     var count int
-    err = row.Scan(&count)
+    err := row.Scan(&count)
     if err != nil {
         return false
     }
@@ -127,17 +107,11 @@ func FindUserByUsername(Username string) bool {
 }
 
 func FindUserByToken(Token string) (User, error){
-	db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
-    if err != nil {
-        return User{}, err
-    }
-    defer db.Close()
-
     query := "SELECT * FROM users WHERE token = ?"
     row := db.QueryRow(query, Token)
 
     var user User
-    err = row.Scan(&user.ID, &user.Token, &user.Username, &user.Email ,&user.Password, &user.Perm)
+    err := row.Scan(&user.ID, &user.Token, &user.Username, &user.Email ,&user.Password, &user.Perm)
     if err != nil {
         if err == sql.ErrNoRows {
             return User{}, fmt.Errorf("kullanıcı bulunamadı")
@@ -148,17 +122,11 @@ func FindUserByToken(Token string) (User, error){
 }
 
 func FindBlogByToken(Token string) (Blog, error) {
-    db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
-    if err != nil {
-        return Blog{}, err
-    }
-    defer db.Close()
-
     query := "SELECT * FROM blogs WHERE token = ?"
     row := db.QueryRow(query, Token)
 
     var blog Blog
-    err = row.Scan(&blog.ID, &blog.Token, &blog.Title, &blog.HTML ,&blog.Views, &blog.Like)
+    err := row.Scan(&blog.ID, &blog.Token, &blog.Title, &blog.HTML ,&blog.Views, &blog.Like)
     if err != nil {
         if err == sql.ErrNoRows {
             return Blog{}, fmt.Errorf("kullanıcı bulunamadı")
@@ -169,18 +137,11 @@ func FindBlogByToken(Token string) (Blog, error) {
 }
 
 func FindBlogLike(UserToken, BlogToken string) bool {
-    db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
-    if err != nil {
-        panic(err.Error())
-    }
-
-    defer db.Close()
-    
     query := "SELECT COUNT(*) FROM likes WHERE UserToken = ? AND BlogToken = ?"
     row := db.QueryRow(query, UserToken, BlogToken)
     
     var count int
-    err = row.Scan(&count)
+    err := row.Scan(&count)
     if err != nil {
         fmt.Println("Like bulunamadı")
         return false
@@ -198,18 +159,11 @@ func FindBlogLike(UserToken, BlogToken string) bool {
 }
 
 func FindPhotoByToken(Token string) (Galery, error){
-    db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
-    if err != nil {
-        panic(err.Error())
-    }
-
-    defer db.Close()
-
     query := "SELECT * FROM galery WHERE token = ?"
     row := db.QueryRow(query, Token)
 
     var galery Galery
-    err = row.Scan(&galery.ID, &galery.Token, &galery.Path)
+    err := row.Scan(&galery.ID, &galery.Token, &galery.Path)
     if err != nil {
         if err == sql.ErrNoRows {
             return Galery{}, err
@@ -221,18 +175,11 @@ func FindPhotoByToken(Token string) (Galery, error){
 }
 
 func FindGaleryPropsByToken(Token string) (GaleryProps, error){
-    db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
-    if err != nil {
-        panic(err.Error())
-    }
-
-    defer db.Close()
-
     query := "SELECT * FROM galerypropertys WHERE galerytoken = ?"
     row := db.QueryRow(query, Token)
 
     var galeryProps GaleryProps
-    err = row.Scan(&galeryProps.ID, &galeryProps.Token, &galeryProps.Title, &galeryProps.Description, &galeryProps.GaleryToken)
+    err := row.Scan(&galeryProps.ID, &galeryProps.Token, &galeryProps.Title, &galeryProps.Description, &galeryProps.GaleryToken)
     if err != nil {
         if err == sql.ErrNoRows {
             return GaleryProps{}, err
@@ -244,17 +191,11 @@ func FindGaleryPropsByToken(Token string) (GaleryProps, error){
 }
 
 func FindProductsByToken(Token string) (EditProduct, error){
-	db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
-    if err != nil {
-        return EditProduct{}, err
-    }
-    defer db.Close()
-
     query := "SELECT * FROM products WHERE Token = ?"
     row := db.QueryRow(query, Token)
 
     var products EditProduct
-    err = row.Scan(&products.ID, &products.Token, &products.Name, &products.Price, &products.Description)
+    err := row.Scan(&products.ID, &products.Token, &products.Name, &products.Price, &products.Description)
     if err != nil {
         if err == sql.ErrNoRows {
             return EditProduct{}, err
