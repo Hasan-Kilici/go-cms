@@ -14,6 +14,7 @@
 - [ ] Toplu silme
 - [ ] CSV veya JSON ile toplu Blog, ürün vs. Ekleme
 - [ ] Kolay kurulum
+- [X] Kolay düzenleme ve estetik tasarım 
 - [ ] WYSIWYG
 - [X] SEO
 - [ ] Chart
@@ -27,6 +28,8 @@
 ``Main.go dosyası artık daha clean``
 - Veritabanında ki düzeltmeler <br>
 ``Database klasöründe ki gereksiz connectler kaldırıldı, kod daha okunur hale getirildi``
+- Kod daha clean hale getirildi <br>
+``Routerlar Handlerlar ile ayrıldı``
 
 ### Siteden görseller
 ![Ekran görüntüsü 2023-07-05 032223](https://github.com/Hasan-Kilici/go-cms/assets/105741983/fb83c0b9-4e92-4a6b-9909-101600709bea)
