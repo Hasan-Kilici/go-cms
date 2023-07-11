@@ -9,27 +9,23 @@
             <h3 class="text-lg">Ürün oluştur</h3>
             <form action="/create/product" method="post" enctype="multipart/form-data">
                 <div>
-                  <label for="Name">Name:</label>
-                  <input type="text" id="Name" name="Name">
+                  <input placeholder="Ürün adı" class="mb-3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" type="text" id="Name" name="Name">
                 </div>
                 <div>
-                  <label for="Description">Description:</label>
-                  <textarea id="Description" name="Description"></textarea>
+
+                  <textarea class="mb-3 block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="Description" name="Description"></textarea>
                 </div>
                 <div>
-                  <label for="Price">Price:</label>
-                  <input type="number" id="Price" name="Price">
+                  <input placeholder="fiyat" class="mb-3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" type="number" id="Price" name="Price">
                 </div>
                 <div>
-                  <label for="Tags">Tags:</label>
-                  <input type="text" id="Tags" name="Tags">
+                  <input placeholder="Etiketler" class="mb-3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" type="text" id="Tags" name="Tags">
                 </div>
                 <div>
-                  <label for="Files">Files:</label>
-                  <input type="file" id="Files" name="files" multiple>
+                  <input class="mb-3 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400" type="file" id="Files" name="files" multiple>
                 </div>
                 <div>
-                  <input type="submit" value="Submit">
+                  <input class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="submit" value="Submit">
                 </div>
               </form>
    
