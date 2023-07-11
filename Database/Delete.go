@@ -213,7 +213,7 @@ func DeleteProductPhoto(Token string){
 		deletedPhotoPath += path
     }
 
-	Path := "./views/public/"+deletedPhotoPath
+	Path := "./views/public"+deletedPhotoPath
 	e := os.Remove(Path)
 	if e != nil {
 		log.Fatal(e)

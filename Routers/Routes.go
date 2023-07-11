@@ -33,6 +33,10 @@ func Initalize(app *fiber.App) {
 	admin.Get("/galery/:Page", Admin.EditGaleryPageWithPages)
 	admin.Get("/products/:Page", Admin.ProductsPageWithPages)
 	admin.Get("/edit/html/partials", Admin.EditPartialsHTML)
+	admin.Get("/edit/html/blog", Admin.EditBlogPagesHTML)
+	admin.Get("/edit/html/forum", Admin.EditForumPagesHTML)
+	admin.Get("/edit/html/error", Admin.EditErrorPagesHTML)
+	admin.Get("/edit/html/e-commerce", Admin.EditECommercePagesHTML)
 
 	// Blog Properties
 	app.Post("/like/blog/:Token", Blog.LikeBlog)

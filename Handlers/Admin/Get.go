@@ -588,6 +588,178 @@ func EditPartialsHTML(c *fiber.Ctx) error {
 	return nil
 }
 
-/*func EditPagesHTML(c *fiber.Ctx) error {
-	
-}*/
+func EditBlogPagesHTML(c *fiber.Ctx) error {
+	redirect := c.Cookies("LastPath")
+	Token := c.Cookies("Token")
+
+	User , err := Database.FindUserByToken(Token)
+	if err != nil {
+		c.Redirect(redirect)
+		return fiber.ErrUnauthorized 
+	}
+
+	if User.Perm != "Admin"{
+		c.Redirect(redirect)
+		return fiber.ErrForbidden 
+	}
+
+	UserInfo := []interface{}{
+		User.ID,
+		User.Username,
+		User.Email,
+		User.Perm,
+	}
+
+	files, err := Utils.GetFiles("./views/pages/blog")
+	if err != nil {
+		c.Redirect(redirect)
+		return fiber.ErrNotFound 
+	}
+
+	cookie := new(fiber.Cookie)
+
+	cookie.Name = "LastPath"
+	cookie.Value = "/admin/edit/html/blog"
+	cookie.Expires = time.Now().Add(time.Hour * 24 * 365)
+
+	c.Cookie(cookie)
+
+	c.Render("admin/pages", fiber.Map{
+		"files":files,
+		"UserInfo":UserInfo,
+		"Title":"HTML Sayfalarını düzenle",
+	})
+	return nil	
+}
+
+func EditForumPagesHTML(c *fiber.Ctx) error {
+	redirect := c.Cookies("LastPath")
+	Token := c.Cookies("Token")
+
+	User , err := Database.FindUserByToken(Token)
+	if err != nil {
+		c.Redirect(redirect)
+		return fiber.ErrUnauthorized 
+	}
+
+	if User.Perm != "Admin"{
+		c.Redirect(redirect)
+		return fiber.ErrForbidden 
+	}
+
+	UserInfo := []interface{}{
+		User.ID,
+		User.Username,
+		User.Email,
+		User.Perm,
+	}
+
+	files, err := Utils.GetFiles("./views/pages/forum")
+	if err != nil {
+		c.Redirect(redirect)
+		return fiber.ErrNotFound 
+	}
+
+	cookie := new(fiber.Cookie)
+
+	cookie.Name = "LastPath"
+	cookie.Value = "/admin/edit/html/forum"
+	cookie.Expires = time.Now().Add(time.Hour * 24 * 365)
+
+	c.Cookie(cookie)
+
+	c.Render("admin/pages", fiber.Map{
+		"files":files,
+		"UserInfo":UserInfo,
+		"Title":"HTML Sayfalarını düzenle",
+	})
+	return nil	
+}
+
+func EditErrorPagesHTML(c *fiber.Ctx) error {
+	redirect := c.Cookies("LastPath")
+	Token := c.Cookies("Token")
+
+	User , err := Database.FindUserByToken(Token)
+	if err != nil {
+		c.Redirect(redirect)
+		return fiber.ErrUnauthorized 
+	}
+
+	if User.Perm != "Admin"{
+		c.Redirect(redirect)
+		return fiber.ErrForbidden 
+	}
+
+	UserInfo := []interface{}{
+		User.ID,
+		User.Username,
+		User.Email,
+		User.Perm,
+	}
+
+	files, err := Utils.GetFiles("./views/pages/error")
+	if err != nil {
+		c.Redirect(redirect)
+		return fiber.ErrNotFound 
+	}
+
+	cookie := new(fiber.Cookie)
+
+	cookie.Name = "LastPath"
+	cookie.Value = "/admin/edit/html/error"
+	cookie.Expires = time.Now().Add(time.Hour * 24 * 365)
+
+	c.Cookie(cookie)
+
+	c.Render("admin/pages", fiber.Map{
+		"files":files,
+		"UserInfo":UserInfo,
+		"Title":"HTML Sayfalarını düzenle",
+	})
+	return nil	
+}
+
+func EditECommercePagesHTML(c *fiber.Ctx) error {
+	redirect := c.Cookies("LastPath")
+	Token := c.Cookies("Token")
+
+	User , err := Database.FindUserByToken(Token)
+	if err != nil {
+		c.Redirect(redirect)
+		return fiber.ErrUnauthorized 
+	}
+
+	if User.Perm != "Admin"{
+		c.Redirect(redirect)
+		return fiber.ErrForbidden 
+	}
+
+	UserInfo := []interface{}{
+		User.ID,
+		User.Username,
+		User.Email,
+		User.Perm,
+	}
+
+	files, err := Utils.GetFiles("./views/pages/e-commerce")
+	if err != nil {
+		c.Redirect(redirect)
+		return fiber.ErrNotFound 
+	}
+
+	cookie := new(fiber.Cookie)
+
+	cookie.Name = "LastPath"
+	cookie.Value = "/admin/edit/html/e-commerce"
+	cookie.Expires = time.Now().Add(time.Hour * 24 * 365)
+
+	c.Cookie(cookie)
+
+	c.Render("admin/pages", fiber.Map{
+		"files":files,
+		"UserInfo":UserInfo,
+		"Title":"HTML Sayfalarını düzenle",
+	})
+	return nil	
+}
