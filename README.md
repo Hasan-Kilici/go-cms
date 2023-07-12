@@ -30,6 +30,12 @@
 ``Database klasöründe ki gereksiz connectler kaldırıldı, kod daha okunur hale getirildi``
 - Kod daha clean hale getirildi <br>
 ``Routerlar Handlerlar ile ayrıldı``
+- Buglar fixlendi
+``
+Fiberin Statik cache'ini yedim.
+sildiğiniz Ürünlerde fotoğraf yoksa sunucu kapanıyordu, onuda düzelttim
+``
+
 
 ### Siteden görseller
 ![Ekran görüntüsü 2023-07-05 032223](https://github.com/Hasan-Kilici/go-cms/assets/105741983/fb83c0b9-4e92-4a6b-9909-101600709bea)
