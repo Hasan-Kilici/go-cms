@@ -144,14 +144,16 @@ func DeleteGaleryProps(GToken string) {
 func DeleteAllProductImages(ImagePaths string) {
 	Images := strings.Split(ImagePaths, ",")
 	ImageCount := len(Images)
+	fmt.Println(ImageCount)
+	if ImageCount > 1 {
+		for i := 0;i < ImageCount;i++ {
 
-	for i := 0;i < ImageCount;i++ {
-
-		Path := "./views/public"+Images[i]
-		fmt.Println(Path)
-		e := os.Remove(Path)
-		if e != nil {
-			log.Fatal(e)
+			Path := "./views/public"+Images[i]
+			fmt.Println(Path)
+			e := os.Remove(Path)
+			if e != nil {
+				log.Fatal(e)
+			}
 		}
 	}
 } 

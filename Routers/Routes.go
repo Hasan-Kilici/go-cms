@@ -8,13 +8,13 @@ import (
 	"CMS/Handlers/ECommerce"
 	"CMS/Handlers/Galery"
 	"github.com/gofiber/fiber/v2"
-	"time"
 )
 
 func Initalize(app *fiber.App) {
 
 	app.Static("/", "./views/public", fiber.Static{
-		CacheDuration: 1 * time.Second,
+		Compress: false,
+		CacheDuration: -1,
 	})
 
 	app.Get("/", Handlers.HomePage)
