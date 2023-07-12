@@ -30,7 +30,7 @@
 ``Database klasöründe ki gereksiz connectler kaldırıldı, kod daha okunur hale getirildi``
 - Kod daha clean hale getirildi <br>
 ``Routerlar Handlerlar ile ayrıldı``
-- Buglar fixlendi
+- Buglar fixlendi <br>
 ``
 Fiberin Statik cache'ini yedim.
 sildiğiniz Ürünlerde fotoğraf yoksa sunucu kapanıyordu, onuda düzelttim
