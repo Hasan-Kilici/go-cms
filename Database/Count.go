@@ -4,7 +4,6 @@ import (
 	"fmt"
 )
 
-
 func GetBlogCount() int {
 	var rowCount int
 	err := db.QueryRow("SELECT COUNT(*) FROM blogs").Scan(&rowCount)

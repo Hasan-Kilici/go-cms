@@ -30,7 +30,7 @@ func Register(c *fiber.Ctx) error {
 			"title":"Giriş yap",
 			"error":"Bu Email Kullanılıyor",
 		})
-		return nil
+		return fiber.ErrUnauthorized 
 	}
 
 	login, _ := Database.Login(form.Email,form.Pass)
@@ -54,6 +54,14 @@ func Login(c *fiber.Ctx) error {
 	if err := c.BodyParser(form); err != nil {
 		return err
 	}
+	user := Database.FindUserByEmail(form.Email)
+	if !user {
+		c.Render("login", fiber.Map{
+			"title":"Giriş yap",
+			"error":"Kullanıcı bulunamadı",
+		})
+		return fiber.ErrNotFound
+	}
 
 	login, err := Database.Login(form.Email,form.Pass)
 	if err != nil{
@@ -61,7 +69,7 @@ func Login(c *fiber.Ctx) error {
 			"title":"Giriş yap",
 			"error":"Email ya da Şifre yanlış",
 		})
-		return nil
+		return fiber.ErrUnauthorized
 	}
 	
 	cookie := new(fiber.Cookie)
