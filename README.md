@@ -33,7 +33,13 @@
 - Buglar fixlendi <br>
 ``
 Fiberin Statik cache'ini yedim.
-sildiğiniz Ürünlerde fotoğraf yoksa sunucu kapanıyordu, onuda düzelttim
+sildiğiniz Ürünlerde fotoğraf yoksa sunucu kapanıyordu, onuda düzelttim.
+kayıt ve girişde ki buglar fixlendi.
+mesajlar düzeltildi
+``
+- Temalara highlight eklendi.
+``
+artık sayfaların html'lerini daha rahat düzenleyebileceksiniz.
 ``
 
 
@@ -43,4 +49,5 @@ sildiğiniz Ürünlerde fotoğraf yoksa sunucu kapanıyordu, onuda düzelttim
 ![Ekran görüntüsü 2023-07-05 032522](https://github.com/Hasan-Kilici/go-cms/assets/105741983/cd2121fd-92be-4b18-811a-0d206cb7c0a9)
 ![Ekran görüntüsü 2023-07-05 032609](https://github.com/Hasan-Kilici/go-cms/assets/105741983/f7038642-3ae2-4770-9a98-68224a4da751)
 ![Ekran görüntüsü 2023-07-05 032747](https://github.com/Hasan-Kilici/go-cms/assets/105741983/d1347b50-76e0-43de-ba8d-c041f2fdb1bf)
+![image](https://github.com/Hasan-Kilici/go-cms/assets/105741983/e4e3a203-f359-4161-b6c1-e6e3464f4064)
 
