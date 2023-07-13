@@ -37,7 +37,7 @@ sildiğiniz Ürünlerde fotoğraf yoksa sunucu kapanıyordu, onuda düzelttim.
 kayıt ve girişde ki buglar fixlendi.
 mesajlar düzeltildi
 ``
-- Temalara highlight eklendi.
+- Temalara highlight eklendi. <br>
 ``
 artık sayfaların html'lerini daha rahat düzenleyebileceksiniz.
 ``
