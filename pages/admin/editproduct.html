@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        {{ template "partials/head" .}}
+    </head>
+    <body class="dark:bg-gray-700 dark:text-gray-100">
+        {{ template "partials/sidebar" .}}
+        <div class="p-4 sm:ml-64">
+            <form method="POST" action="/edit/product/{{.PToken}}">
+                <div>
+                    <label for="Name">Name:</label>
+                    <input type="text" id="Name" name="Name" value="{{.Name}}">
+                  </div>
+                  <div>
+                    <label for="Description">Description:</label>
+                    <textarea id="Description" name="Description">{{.Description}}</textarea>
+                  </div>
+                  <div>
+                    <label for="Price">Price:</label>
+                    <input type="number" id="Price" name="Price" value="{{.Price}}">
+                  </div>
+                  <div>
+                    <label for="Tags">Tags:</label>
+                    <input type="text" id="Tags" name="Tags" value="{{range .Tags}}{{.Tag}},{{end}}">
+                  </div>
+                  <div>
+                    <input type="submit" value="Submit">
+                  </div>
+            </form>
+            <div class="container mx-auto px-4">
+                <h3 class="text-3xl font-bold text-gray-100 mb-[25px]">Fotoğraflar</h3>
+                <div class="flex flex-wrap gap-4">
+                    {{range .Images}}
+                    <div class="sm:w-[100%] md:w-[32.3333%]">
+                        <img class="rounded-lg object-none h-[200px] w-[100%] bg-[#00aed9]" src="{{.Path}}" alt="" /><br>
+                        <button onclick="deleteProductImage('{{.Token}}')" type="button" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">
+                            Delete
+                        </button>
+                    </div>
+                    {{end}}
+                </div>
+            </div>
+        </div>
+    </body>
+    <script>
+    </script>
+</html>
+        

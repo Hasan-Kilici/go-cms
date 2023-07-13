@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        {{ template "partials/head" .}}
+        <meta name="keywords" content="{{range .Tags}}{{.Tag}},{{end}}">
+    </head>
+    <body>
+       {{ template "partials/navbar" .}}
+       <h2>{{.Title}}</h2>
+       <div id="HTML">
+
+       </div>
+       {{ if .UserStatus }}
+       {{ if .UserLike }}
+        <form method="POST" action="/unlike/blog/{{.Token}}">
+            <input type="submit" value="Beğeniyi geri al {{.Like}}">
+        </form>
+        {{else}}
+        <form method="POST" action="/like/blog/{{.Token}}">
+            <input type="submit" value="Beğen {{.Like}}">
+        </form>
+        {{end}}
+       {{end}}
+       {{range .Tags}}
+       <span class="bg-pink-100 text-pink-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-pink-900 dark:text-pink-300">{{.Tag}}</span>
+       {{end}}
+        <script>
+            window.onload = ()=>{
+                document.getElementById("HTML").innerHTML = "{{.HTML}}";
+            }
+        </script>
+    </body>
+</html>

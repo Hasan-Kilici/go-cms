@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        {{ template "partials/head" .}}
+        <script src="./login.js"></script>
+    </head>
+    <body>
+        {{if .error }}
+            {{.error}}
+        {{ end }}
+        <div id="error" style="display:none;">
+
+        </div>
+        <h3>Giriş yap</h3>
+        <input type="email" id="email" name="email" placeholder="Email giriniz">
+        <input type="password" id="pass" name="pass" placeholder="şifre giriniz">
+        <button id="submit">Giriş yap</button>
+    </body>
+    <script>
+        const submit = document.getElementById("submit")
+        submit.addEventListener("click",Login);
+    </script>
+</html>

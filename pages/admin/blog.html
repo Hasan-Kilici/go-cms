@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        {{ template "partials/head" .}}
+    </head>
+    <body class="dark:bg-gray-700 dark:text-gray-100">
+       {{ template "partials/sidebar" .}}
+       <div class="p-4 sm:ml-64">
+            <h3 class="text-lg">Blog oluştur</h3>
+    <form method="POST" action="/create/blog">
+            <div class="mb-6">
+            <input type="text" id="Title" name="Title" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Başlık" required>
+            </div>
+            <div class="mb-6">
+                <textarea id="HTML" name="HTML" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="HTML"></textarea>
+            </div>
+            <div class="mb-6">
+                <input type="text" id="Tags" name="Tags" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Etiketler" required>
+            </div>
+            <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Gönder</button>
+    </form>
+
+   
+
+    <h3 class="text-2xl mt-5 mb-5">Bloglar</h3>
+                     
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg ">
+        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 dark:bg-gray-800">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:bg-gray-900 dark:text-gray-400">
+                <tr>
+                    <th scope="col" class="px-6 py-3">
+                        Başlık
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Görüntülenme
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Beğeni
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Sil
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Düzenle
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Görüntüle
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {{range .Blogs}}
+                <tr>
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        {{.Title}}
+                    </th>
+                    <td class="px-6 py-4">
+                        {{.Views}}
+                    </td>
+                    <td class="px-6 py-4">
+                        {{.Like}}
+                    </td>
+                    <td class="px-6 py-4">
+                        <button onclick="deleteBlog('{{.Token}}')">Sil</button>
+                    </td>
+                    <td class="px-6 py-4">
+                        <a href="/edit/blog/{{.Token}}">Düzenle</a>
+                    </td>
+                    <td class="px-6 py-4">
+                        <a href="/blog/{{.Token}}">Görüntüle</a>
+                    </td>
+                </tr>
+                {{end}}
+            </tbody>
+        </table> 
+        <div style="display:none" id="nf" class="height-[150px] w-full">
+            <h2 class="text-5xl text-bold mt-5 mb-5 text-center">Blog Bulunamadı</h2>
+        </div>    
+</div>
+<div id="pages" class="mt-5 mb-5 inline-flex gap-1 rounded-md shadow-sm" role="group">
+    
+</div>
+
+  
+</div>
+<script>
+    let Blog = Number("{{.BlogCount}}");
+    if(Blog < 1){
+        document.getElementById("nf").style["display"] = "block";
+    } else {
+    for (var i = 0; i <= Blog; i++) {
+            let page = 0; 
+            if (i-1 % 10 === 0) {
+                pageCount = Math.floor((i / 10) + 1);
+                page = Math.floor(i / 10);
+                document.getElementById("pages").innerHTML += `
+                <button onclick="window.location.href = '/admin/blogs/${page}'" type="button" class="rounded-md dark:bg-gray-800 px-4 py-2 text-sm font-medium text-gray-900 bg-white border-t border-b border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:border-gray-800 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">
+                        ${pageCount}
+                </button>`
+            }
+        }
+    }
+</script>
+</body>
+</html>
