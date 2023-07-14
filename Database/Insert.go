@@ -1,8 +1,6 @@
 package Database
 
 import (
-	"database/sql"
-	_ "github.com/go-sql-driver/mysql"
 	"CMS/Utils"
 	"fmt"
 	b64 "encoding/base64"
@@ -10,14 +8,7 @@ import (
 	"image"
 )
 
-func Register(Username, Email, Password string) bool {
-	db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
-    if err != nil {
-        panic(err.Error())
-    }
-
-    defer db.Close()
-	
+func Register(Username, Email, Password string) bool {	
 	if !FindUserByEmail(Email){
 		Token := Utils.GenerateToken(31)
 		NewPassword := b64.URLEncoding.EncodeToString([]byte(Password))
@@ -43,13 +34,6 @@ func Register(Username, Email, Password string) bool {
 }
 
 func CreateBlog(Title, HTML , Tags string){
-	db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
-    if err != nil {
-        panic(err.Error())
-    }
-
-    defer db.Close()
-
 	Token := Utils.GenerateToken(31)
 	res, err := db.Exec("INSERT INTO Blogs VALUES (?,?,?,?,?,?)","",Token,Title,HTML,0,0)
 	if err != nil {
@@ -67,13 +51,6 @@ func CreateBlog(Title, HTML , Tags string){
 }
 
 func SaveUserLike(BlogToken, UserToken string) {
-	db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
-    if err != nil {
-        panic(err.Error())
-    }
-
-    defer db.Close()
-
 	Token := Utils.GenerateToken(31)
 	res, err := db.Exec("INSERT INTO likes VALUES (?,?,?,?)","",Token,UserToken,BlogToken)
 	if err != nil {
@@ -89,13 +66,6 @@ func SaveUserLike(BlogToken, UserToken string) {
 }
 
 func SaveAllBlogTags(BlogToken, Tag string) {
-	db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
-    if err != nil {
-        panic(err.Error())
-    }
-
-    defer db.Close()
-
 	Tags := strings.Split(Tag, ",")
 	TagCount := len(Tags)
 	for i := 0;i < TagCount;i++ {
@@ -114,13 +84,6 @@ func SaveAllBlogTags(BlogToken, Tag string) {
 } 
 
 func UploadFile(img image.Image, path , dbpath , title, description string){
-	db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
-    if err != nil {
-        panic(err.Error())
-    }
-
-    defer db.Close()
-
 	Utils.SaveResizedImage(img, path)
 
 	Token := Utils.GenerateToken(31)
@@ -139,12 +102,6 @@ func UploadFile(img image.Image, path , dbpath , title, description string){
 }
 
 func SaveImageProps(galeryToken, title, description string) {
-	db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
-    if err != nil {
-        panic(err.Error())
-    }
-
-    defer db.Close()
 	Token := Utils.GenerateToken(31)
 	res, err := db.Exec("INSERT INTO galerypropertys VALUES (?,?,?,?,?)","",Token,title,description,galeryToken)
 	if err != nil {
@@ -161,13 +118,6 @@ func SaveImageProps(galeryToken, title, description string) {
 
 
 func SaveAllProductTags(ProductToken, Tag string) {
-	db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
-    if err != nil {
-        panic(err.Error())
-    }
-
-    defer db.Close()
-
 	Tags := strings.Split(Tag, ",")
 	TagCount := len(Tags)
 	for i := 0;i < TagCount;i++ {
@@ -186,13 +136,6 @@ func SaveAllProductTags(ProductToken, Tag string) {
 } 
 
 func SaveAllProductImages(ProductToken, ImagePaths string) {
-	db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
-    if err != nil {
-        panic(err.Error())
-    }
-
-    defer db.Close()
-
 	Images := strings.Split(ImagePaths, ",")
 	ImagesCount:= len(Images)
 
@@ -212,13 +155,6 @@ func SaveAllProductImages(ProductToken, ImagePaths string) {
 }
 
 func CreateProduct(Name, Description, Tags, imagePaths string, Price int){
-	db, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/CMS")
-    if err != nil {
-        panic(err.Error())
-    }
-
-    defer db.Close()
-
 	Token := Utils.GenerateToken(31)
 	res, err := db.Exec("INSERT INTO products VALUES (?,?,?,?,?)","",Token,Name,Price,Description)
 	if err != nil {

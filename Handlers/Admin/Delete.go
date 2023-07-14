@@ -26,3 +26,4 @@ func DeleteUser(c *fiber.Ctx) error {
 	c.Redirect(redirect)
 	return nil
 }
+
