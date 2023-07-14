@@ -2,20 +2,27 @@
 <html>
     <head>
         {{ template "partials/head" .}}
+        <script src="/edit.js"></script>
     </head>
     <body class="dark:bg-gray-700 dark:text-gray-100">
         {{ template "partials/sidebar" .}}
         <div class="p-4 sm:ml-64">
             {{range .files}}
-            <div id="{{.Path}}">
-                <p>{{.Path}} Düzenle</p>
-                <form method="POST" action="/edit/page">
-                    <textarea class="h-[250px] block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="HTML" name="HTML">{{.Content}}</textarea><br>
+                <div>
+                    <p>{{.Path}} Düzenle</p>
+                    <pre><code contenteditable id="{{.Path}}" class="language-html">{{.Content}}</code></pre>
                     <input type="hidden" id="Path" name="Path" value="{{.Path}}">
-                    <input type="submit">
-                </form>
-            </div>
+                    <button onclick="EditPage('{{.Path}}')">Düzenle</button>
+                </div>
             {{end}}      
         </div>
     </body>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+        document.querySelectorAll('pre code').forEach((el) => {
+            hljs.highlightElement(el);
+        });
+    });
+    </script>
 </html>

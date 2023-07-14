@@ -2,17 +2,21 @@
 <html>
     <head>
         {{ template "partials/head" .}}
+        <script src="./register.js"></script>
     </head>
     <body>
-        {{if .error }}
-            {{.error}}
-        {{ end }}
-        <h3>Giriş yap</h3>
-        <form method="POST" action="/register">
-            <input type="text" id="username" name="username" placeholder="Kullanıcı adı giriniz">
-            <input type="email" id="email" name="email" placeholder="Email giriniz">
-            <input type="password" id="pass" name="pass" placeholder="şifre giriniz">
-            <input type="submit">
-        </form>
+        <div id="error" style="display:none;">
+
+        </div>
+
+        <h3>Kayıt ol</h3>
+        <input type="text" id="username" name="username" placeholder="Kullanıcı adı giriniz" required>
+        <input type="email" id="email" name="email" placeholder="Email giriniz" required>
+        <input type="password" id="pass" name="pass" placeholder="şifre giriniz" required>
+        <button id="submit">Kayıt ol</button>
     </body>
+    <script>
+        const submit = document.getElementById("submit")
+        submit.addEventListener("click",Register);
+    </script>
 </html>

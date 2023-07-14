@@ -138,6 +138,3 @@ function deleteUser(userToken) {
         console.error('İstek hatası:', error);
       });
   }
-
-
-  
