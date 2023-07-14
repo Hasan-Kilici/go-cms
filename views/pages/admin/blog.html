@@ -2,6 +2,7 @@
 <html>
     <head>
         {{ template "partials/head" .}}
+        <script src="/blog.js"></script>
     </head>
     <body class="dark:bg-gray-700 dark:text-gray-100">
        {{ template "partials/sidebar" .}}
@@ -20,14 +21,15 @@
             <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Gönder</button>
     </form>
 
-   
 
-    <h3 class="text-2xl mt-5 mb-5">Bloglar</h3>
+    <h3 class="text-2xl mt-5 mb-3 w-[75%]">Bloglar</h3>
+    <button class="mb-3 w-[30%] text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Seçili blogları sil</button>
                      
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg ">
         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 dark:bg-gray-800">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:bg-gray-900 dark:text-gray-400">
                 <tr>
+                    <th scope="col" class="px-6 py-3"></th>
                     <th scope="col" class="px-6 py-3">
                         Başlık
                     </th>
@@ -51,9 +53,12 @@
             <tbody>
                 {{range .Blogs}}
                 <tr>
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    <td class="px-6 py-4">
+                            <input type="checkbox" onclick="addBlogDeleteList('{{.Token}}')">
+                    </td>
+                    <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                         {{.Title}}
-                    </th>
+                    </td>
                     <td class="px-6 py-4">
                         {{.Views}}
                     </td>
@@ -90,7 +95,7 @@
     } else {
     for (var i = 0; i <= Blog; i++) {
             let page = 0; 
-            if (i-1 % 10 === 0) {
+            if (i % 10 === 0) {
                 pageCount = Math.floor((i / 10) + 1);
                 page = Math.floor(i / 10);
                 document.getElementById("pages").innerHTML += `

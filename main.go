@@ -17,7 +17,7 @@ func main() {
 
 	Routers.Initalize(app)
 	
-	err := app.Listen(":3000")
+	err := app.Listen("127.0.0.1:3000")
 	if err != nil {
 		panic(err)
 	}

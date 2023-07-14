@@ -31,7 +31,7 @@
    
 
     <h3 class="text-2xl mt-5 mb-5">Bloglar</h3>
-                     
+        
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg ">
         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 dark:bg-gray-800">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:bg-gray-900 dark:text-gray-400">
@@ -92,7 +92,7 @@
     } else {
     for (var i = 0; i <= product; i++) {
             let page = 0; 
-            if (i-1 % 10 === 0) {
+            if (i % 10 === 0) {
                 pageCount =  Math.floor((i / 10) + 1);
                 page =  Math.floor(i / 10);
                 document.getElementById("pages").innerHTML += `
