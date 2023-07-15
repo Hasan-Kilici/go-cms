@@ -1,11 +1,11 @@
-let deletedItemsTokens = "";
+let deletedBlogsTokens = "";
 
 function addBlogDeleteList(token){
-    deletedItemsTokens += token+"-";
+    deletedBlogsTokens += token+"-";
 }
 
 function deleteSelectedBlogs(){
-    let blogTokens = deletedItemsTokens.slice(0, -1);
+    let blogTokens = deletedBlogsTokens.slice(0, -1);
     let deletedBlogTokens = blogTokens.split("-");
     let blogCount = deletedBlogTokens.length;
     for(let i = 0;i < blogCount;i++){
