@@ -1,3 +1,9 @@
+# ÖNEMLİ
+- FASTHTTP geliştiricilerinin kafasının güzel olmasından mütevellik gitmişler statik dosyalara cache eklemişler. tamam bu sorun değil ancak sen bu cache'i kaldıramıyorsun.
+- yaptıkları bu salaklıktan ötürü statik içinde ki fotoğrafları silemiyorum. o yüzden sadece api haline getiricem back-end'i front-end'i de en sevdiğim front-end framework olan svelteden yapıcam ssr da da yüksek ihtimalle astro kullanırım.
+bu projeyi baştan yapıcam.
+uzun bir süre commit atmamı beklemeyin
+
 # go-cms
 ### go ile yapmış olduğum basit bir content manegment system
 ### Yapılacaklar listesi
